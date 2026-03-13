@@ -1,0 +1,31 @@
+---
+import TextSection from './TextSection.astro';
+import CardsSection from './CardsSection.astro';
+import CtaSection from './CtaSection.astro';
+import FaqSection from './FaqSection.astro';
+import StatsSection from './StatsSection.astro';
+import type { Section } from '../../lib/data';
+
+interface Props {
+  sections: Section[];
+}
+
+const { sections } = Astro.props;
+---
+
+{sections.map((section) => {
+  switch (section.type) {
+    case 'text':
+      return <TextSection title={section.title} paragraphs={section.paragraphs} background={section.background} />;
+    case 'cards':
+      return <CardsSection title={section.title} cols={section.cols} items={section.items} background={section.background} />;
+    case 'cta':
+      return <CtaSection title={section.title} text={section.text} buttonLabel={section.buttonLabel} buttonUrl={section.buttonUrl} buttonVariant={section.buttonVariant} background={section.background} />;
+    case 'faq':
+      return <FaqSection title={section.title} items={section.items} background={section.background} />;
+    case 'stats':
+      return <StatsSection items={section.items} background={section.background} />;
+    default:
+      return null;
+  }
+})}

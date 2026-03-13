@@ -1,0 +1,65 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./src/**/*.{astro,html,js,ts}'],
+  theme: {
+    extend: {
+      colors: {
+        bg: '#F3F9F9',
+        black: '#000000',
+        border: '#F5F8F9',
+        primary: '#235265',
+        secondary: '#F0816B',
+        shadow: '#EEF1F3',
+        text: '#828282',
+        third: '#97BCBB',
+        accent: '#E8A838',
+        success: '#2E7D32',
+        'success-bg': '#E8F5E9',
+        'success-border': '#A5D6A7',
+        error: '#C62828',
+        'error-bg': '#FBE9E7',
+        'error-border': '#EF9A9A',
+      },
+      fontFamily: {
+        primary: ['system-ui', '-apple-system', 'sans-serif'],
+        secondary: ['system-ui', '-apple-system', 'sans-serif'],
+      },
+      spacing: {
+        '3xs': '4px',
+        '2xs': '8px',
+        xs: '12px',
+        s: '16px',
+        m: '24px',
+        l: 'clamp(1.5rem, 1vi + 1.25rem, 2rem)',
+        xl: 'clamp(2rem, 2vi + 1.5rem, 3rem)',
+        '2xl': 'clamp(2.5rem, 3vi + 1.75rem, 4rem)',
+        '3xl': 'clamp(3.5rem, 5vi + 2.25rem, 6rem)',
+        '4xl': 'clamp(4.5rem, 7vi + 2.75rem, 8rem)',
+        container: '1100px',
+      },
+      fontSize: {
+        h1: ['clamp(2.441rem, 1.22vi + 2.14rem, 3.052rem)', { lineHeight: '1.2' }],
+        h2: ['clamp(1.953rem, 0.98vi + 1.71rem, 2.441rem)', { lineHeight: '1.2' }],
+        h3: ['clamp(1.563rem, 0.78vi + 1.37rem, 1.953rem)', { lineHeight: '1.3' }],
+        h4: ['clamp(1.25rem, 0.63vi + 1.09rem, 1.563rem)', { lineHeight: '1.3' }],
+        'text-xl': ['clamp(1.125rem, 0.25vi + 1.06rem, 1.25rem)', { lineHeight: '1.6' }],
+        'text-l': ['clamp(1rem, 0.25vi + 0.94rem, 1.125rem)', { lineHeight: '1.6' }],
+        'text-m': ['1rem', { lineHeight: '1.6' }],
+        'text-s': ['0.875rem', { lineHeight: '1.6' }],
+        'text-xs': ['0.75rem', { lineHeight: '1.6' }],
+      },
+      maxWidth: {
+        container: '1100px',
+      },
+      borderRadius: {
+        DEFAULT: '12px',
+        m: '16px',
+      },
+      boxShadow: {
+        card: '0 4px 12px #EEF1F3',
+        form: '0 4px 20px rgba(0, 0, 0, 0.05)',
+      },
+    },
+  },
+  plugins: [],
+};

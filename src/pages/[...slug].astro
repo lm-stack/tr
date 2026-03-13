@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import SectionRenderer from '../components/sections/SectionRenderer.astro';
+import { getCollection } from 'astro:content';
+import type { CustomPageData } from '../lib/data';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('custom-pages');
+  return pages.map((page) => ({
+    params: { slug: page.id },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const data = page.data as CustomPageData;
+---
+
+<Base seo={data.seo} breadcrumb={data.breadcrumb}>
+  {data.hero && <Hero title={data.hero.title} subtitle={data.hero.subtitle} />}
+  <SectionRenderer sections={data.sections} />
+</Base>

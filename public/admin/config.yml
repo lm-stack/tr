@@ -1,0 +1,316 @@
+# app_title: "Mon Site"  # À personnaliser
+logo_url: /images/lm-logo.png
+
+backend:
+  name: github
+  repo: lm-stack/site-blueprint
+  branch: main
+  # base_url: https://your-oauth-provider.example.com  # À configurer pour l'auth OAuth
+
+# site_url: https://example.com  # À configurer pour activer le bouton preview
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: pages
+    label: Pages
+    icon: description
+    files:
+      - name: home
+        label: Accueil
+        icon: home
+        file: "src/content/pages/home.yml"
+        preview_path: "/"
+        fields:
+          - label: SEO
+            name: seo
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Image OG, name: ogImage, widget: image, required: false }
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Sous-titre, name: subtitle, widget: string }
+          - label: Contenu
+            name: content
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - label: Cartes
+                name: cards
+                widget: list
+                fields:
+                  - { label: Icône, name: icon, widget: string, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }
+                  - { label: Titre, name: title, widget: string }
+                  - { label: Texte, name: text, widget: text }
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Description, name: description, widget: text }
+
+      - name: a-propos
+        label: À propos
+        icon: info
+        file: "src/content/pages/a-propos.yml"
+        preview_path: "/a-propos/"
+        fields:
+          - label: SEO
+            name: seo
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Image OG, name: ogImage, widget: image, required: false }
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+          - label: Notre histoire
+            name: story
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Icône, name: icon, widget: string, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }
+              - label: Paragraphes
+                name: paragraphs
+                widget: list
+                field: { label: Paragraphe, name: paragraph, widget: text }
+          - label: Encadré
+            name: sidebar
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Icône, name: icon, widget: string, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }
+              - { label: Texte, name: text, widget: text }
+
+      - name: contact
+        label: Contact
+        icon: mail
+        file: "src/content/pages/contact.yml"
+        preview_path: "/contact/"
+        fields:
+          - label: SEO
+            name: seo
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Image OG, name: ogImage, widget: image, required: false }
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+          - label: Formulaire
+            name: form
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Icône, name: icon, widget: string, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }
+          - label: Informations
+            name: info
+            widget: list
+            fields:
+              - { label: Icône, name: icon, widget: string, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }
+              - { label: Titre, name: title, widget: string }
+              - { label: Texte, name: text, widget: text }
+
+      - name: recherche
+        label: Recherche
+        icon: search
+        file: "src/content/pages/recherche.yml"
+        preview_path: "/recherche/"
+        fields:
+          - label: SEO
+            name: seo
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Image OG, name: ogImage, widget: image, required: false }
+          - { label: Titre, name: title, widget: string }
+          - { label: Sous-titre, name: subtitle, widget: string }
+
+  - name: custom-pages
+    label: Pages libres
+    icon: add_circle
+    folder: "src/content/custom-pages"
+    extension: yml
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - label: SEO
+        name: seo
+        widget: object
+        fields:
+          - { label: Titre, name: title, widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Image OG, name: ogImage, widget: image, required: false }
+      - label: Hero
+        name: hero
+        widget: object
+        required: false
+        fields:
+          - { label: Titre, name: title, widget: string }
+          - { label: Sous-titre, name: subtitle, widget: string, required: false }
+      - { label: Fil d'Ariane, name: breadcrumb, widget: string }
+      - label: Sections
+        name: sections
+        widget: list
+        types:
+          - label: Texte
+            name: text
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string, required: false }
+              - label: Paragraphes
+                name: paragraphs
+                widget: list
+                field: { label: Paragraphe, name: paragraph, widget: text }
+              - label: Fond
+                name: background
+                widget: select
+                required: false
+                options:
+                  - { label: Clair, value: light }
+                  - { label: Primaire, value: primary }
+                  - { label: Sombre, value: dark }
+          - label: Cartes
+            name: cards
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string, required: false }
+              - label: Colonnes
+                name: cols
+                widget: select
+                required: false
+                default: "3"
+                options: ["2", "3", "4"]
+              - label: Cartes
+                name: items
+                widget: list
+                fields:
+                  - { label: Icône, name: icon, widget: string, required: false, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }
+                  - { label: Titre, name: title, widget: string }
+                  - { label: Texte, name: text, widget: text }
+              - label: Fond
+                name: background
+                widget: select
+                required: false
+                options:
+                  - { label: Clair, value: light }
+                  - { label: Primaire, value: primary }
+                  - { label: Sombre, value: dark }
+          - label: Call to Action
+            name: cta
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string }
+              - { label: Texte, name: text, widget: text, required: false }
+              - { label: Libellé bouton, name: buttonLabel, widget: string }
+              - { label: URL bouton, name: buttonUrl, widget: string }
+              - label: Variante bouton
+                name: buttonVariant
+                widget: select
+                required: false
+                default: secondary
+                options:
+                  - { label: Primaire, value: primary }
+                  - { label: Secondaire, value: secondary }
+                  - { label: Outline, value: outline }
+                  - { label: Outline blanc, value: outline-white }
+                  - { label: Sombre, value: dark }
+              - label: Fond
+                name: background
+                widget: select
+                required: false
+                options:
+                  - { label: Clair, value: light }
+                  - { label: Primaire, value: primary }
+                  - { label: Sombre, value: dark }
+          - label: FAQ
+            name: faq
+            widget: object
+            fields:
+              - { label: Titre, name: title, widget: string, required: false }
+              - label: Questions
+                name: items
+                widget: list
+                fields:
+                  - { label: Question, name: question, widget: string }
+                  - { label: Réponse, name: answer, widget: text }
+              - label: Fond
+                name: background
+                widget: select
+                required: false
+                options:
+                  - { label: Clair, value: light }
+                  - { label: Primaire, value: primary }
+                  - { label: Sombre, value: dark }
+          - label: Chiffres clés
+            name: stats
+            widget: object
+            fields:
+              - label: Chiffres
+                name: items
+                widget: list
+                fields:
+                  - { label: Valeur, name: value, widget: string }
+                  - { label: Libellé, name: label, widget: string }
+              - label: Fond
+                name: background
+                widget: select
+                required: false
+                options:
+                  - { label: Clair, value: light }
+                  - { label: Primaire, value: primary }
+                  - { label: Sombre, value: dark }
+
+  # Paramètres toujours en dernier dans la sidebar CMS
+  - name: settings
+    label: Paramètres
+    icon: settings
+    files:
+      - name: site
+        label: Site
+        icon: language
+        file: "src/content/settings/site.json"
+        format: json
+        fields:
+          - { label: Nom du site, name: name, widget: string }
+          - { label: Logo (texte), name: logoText, widget: string }
+          - { label: Logo (icône Phosphor), name: logoIcon, widget: string, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }
+          - { label: Copyright, name: copyright, widget: string }
+          - { label: Webhook Token, name: webhookToken, widget: string, required: false, hint: "Token Bearer pour authentifier les requêtes vers le webhook n8n" }
+
+      - name: coordonnees
+        label: Coordonnées
+        icon: contact_phone
+        file: "src/content/settings/coordonnees.json"
+        format: json
+        fields:
+          - { label: Email, name: email, widget: string }
+          - { label: Téléphone, name: phone, widget: string, required: false }
+          - { label: Adresse, name: address, widget: string, required: false }
+
+      - name: social
+        label: Réseaux sociaux
+        icon: share
+        file: "src/content/settings/social.json"
+        format: json
+        fields:
+          - label: Réseaux sociaux
+            name: social
+            widget: list
+            required: false
+            fields:
+              - { label: Réseau, name: label, widget: string }
+              - { label: URL, name: url, widget: string }
+              - { label: Icône Phosphor, name: icon, widget: string, hint: "phosphoricons.com → copier le nom (ex : ph-house)" }

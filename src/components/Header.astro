@@ -1,0 +1,99 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { SiteData } from '../lib/data';
+
+interface Props {
+  site: SiteData;
+  currentUrl: string;
+}
+
+const { site, currentUrl } = Astro.props;
+---
+
+<header
+  id="header"
+  class="fixed top-0 left-0 right-0 z-100 bg-white transition-all duration-300"
+  role="banner"
+  data-pagefind-ignore
+>
+  <div class="flex items-center justify-between max-w-container mx-auto py-s px-m">
+    {/* Logo */}
+    <a
+      href="/"
+      class="text-primary font-bold text-h4"
+      aria-label={`Accueil — ${site.name}`}
+    >
+      {site.logoText}
+    </a>
+
+    {/* Desktop nav */}
+    <nav class="hidden md:flex items-center gap-l" aria-label="Navigation principale">
+      {site.nav.map((item) => {
+        if (item.children && item.children.length > 0) {
+          return (
+            <div class="header__dropdown relative">
+              <button
+                class="header__dropdown-trigger bg-transparent border-none cursor-pointer inline-flex items-center gap-3xs p-0 font-inherit text-text-s text-black transition-colors duration-300 hover:text-primary"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                {item.label}
+                <Icon name="ph:caret-down" class="w-4 h-4" aria-hidden="true" />
+              </button>
+              <div class="header__dropdown-menu hidden absolute top-full left-1/2 -translate-x-1/2 min-w-[180px] bg-white shadow-card rounded py-2xs mt-xs z-[101]">
+                {item.children.map((child) => (
+                  <a
+                    href={child.url}
+                    class:list={[
+                      'block py-2xs px-s text-text-s whitespace-nowrap hover:bg-bg',
+                      { 'text-primary': currentUrl === child.url },
+                    ]}
+                    {...(currentUrl === child.url ? { 'aria-current': 'page' } : {})}
+                  >
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <a
+            href={item.url}
+            class:list={[
+              'text-text-s text-black transition-colors duration-300 hover:text-primary',
+              { 'text-primary font-semibold': currentUrl === item.url },
+            ]}
+            {...(currentUrl === item.url ? { 'aria-current': 'page' } : {})}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+
+      {site.searchUrl && (
+        <a
+          href={site.searchUrl}
+          class="text-black hover:text-primary transition-colors duration-300"
+          aria-label="Recherche"
+        >
+          <Icon name="ph:magnifying-glass" class="w-5 h-5" aria-hidden="true" />
+        </a>
+      )}
+    </nav>
+
+    {/* Burger button */}
+    <button
+      id="burger"
+      class="flex md:hidden flex-col gap-[6px] bg-transparent border-none cursor-pointer p-0"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Ouvrir le menu"
+    >
+      <span class="block w-6 h-0.5 bg-black"></span>
+      <span class="block w-6 h-0.5 bg-black"></span>
+      <span class="block w-6 h-0.5 bg-black"></span>
+    </button>
+  </div>
+</header>

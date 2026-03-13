@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { getEntry } from 'astro:content';
+import type { RecherchePageData } from '../lib/data';
+
+const page = await getEntry('pages', 'recherche');
+const data = page!.data as RecherchePageData;
+---
+
+<Base
+  seo={data.seo}
+  breadcrumb="Recherche"
+  noindex
+>
+  <div data-pagefind-ignore="all">
+    <section class="min-h-[60vh] flex items-center justify-center py-4xl">
+      <div class="search__inner text-center max-w-[600px] mx-auto px-m">
+        <h1 class="mb-s">{data.title}</h1>
+        <p class="text-text mb-l">{data.subtitle}</p>
+        <div id="search"></div>
+      </div>
+    </section>
+
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+    <script is:inline src="/pagefind/pagefind-ui.js"></script>
+    <script is:inline>
+      window.addEventListener('DOMContentLoaded', function() {
+        new PagefindUI({
+          element: "#search",
+          showSubResults: true,
+          showImages: false,
+          translations: {
+            placeholder: "Rechercher...",
+            zero_results: "Aucun résultat pour \u00ab [SEARCH_TERM] \u00bb",
+            many_results: "[COUNT] résultats",
+            one_result: "1 résultat",
+            searching: "Recherche en cours..."
+          }
+        });
+      });
+    </script>
+  </div>
+</Base>

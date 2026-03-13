@@ -1,0 +1,21 @@
+seo:
+  title: "Contact"
+  description: "Contactez-nous par formulaire, email ou téléphone. Personnalisez cette description pour indiquer vos coordonnées et horaires (150-160 caractères max)."
+
+hero:
+  title: "Contact"
+
+form:
+  title: "Contactez-nous"
+  icon: "ph-chat-circle"
+
+info:
+  - icon: "ph-map-pin"
+    title: "Adresse"
+    text: "À personnaliser"
+  - icon: "ph-envelope-simple"
+    title: "Email"
+    text: "email@example.com"
+  - icon: "ph-phone"
+    title: "Téléphone"
+    text: "+41 00 000 00 00"

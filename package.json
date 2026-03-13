@@ -1,0 +1,26 @@
+{
+  "name": "site-blueprint",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Template de site web avec Astro, Tailwind CSS et Sveltia CMS",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && pagefind --site dist",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.5.0",
+    "@astrojs/sitemap": "^3.3.0",
+    "astro-icon": "^1.1.0",
+    "@iconify-json/ph": "^1.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "pagefind": "^1.4.0"
+  }
+}

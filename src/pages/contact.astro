@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import Grid from '../components/Grid.astro';
+import Button from '../components/Button.astro';
+import FormField from '../components/FormField.astro';
+import { Icon } from 'astro-icon/components';
+import { getEntry } from 'astro:content';
+import { getSiteData, toIconName, type ContactPageData } from '../lib/data';
+
+const page = await getEntry('pages', 'contact');
+const data = page!.data as ContactPageData;
+const site = await getSiteData();
+---
+
+<Base
+  seo={data.seo}
+  breadcrumb="Contact"
+>
+  <Hero title={data.hero.title} />
+
+  <Section>
+    <Grid cols="2" gap="xl">
+      <div>
+        <h2 class="mb-m">
+          <Icon name={toIconName(data.form.icon)} class="inline w-6 h-6 mr-3xs align-[-3px]" aria-hidden="true" />
+          {data.form.title}
+        </h2>
+        <form data-webhook={site.webhookUrl} data-webhook-token={site.webhookToken || ''} novalidate>
+          <!-- Honeypot anti-spam — champ invisible pour les humains -->
+          <div class="absolute opacity-0 -z-10 h-0 overflow-hidden" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <FormField type="text" name="name" label="Nom" required icon="user" maxlength={100} autocomplete="name" />
+          <FormField type="email" name="email" label="Email" required icon="at" maxlength={254} autocomplete="email" />
+          <FormField type="textarea" name="message" label="Message" required icon="chat-text" maxlength={5000} />
+          <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey} data-language="fr" data-appearance="interaction-only"></div>
+          <Button type="submit" variant="primary" icon="paper-plane-tilt">Envoyer</Button>
+          <div id="form-feedback" class="form-feedback" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+      <div>
+        {data.info.map((item, i) => (
+          <Card title={item.title} icon={item.icon} class={i < data.info.length - 1 ? 'mb-m' : ''}>
+            <p>{item.text}</p>
+          </Card>
+        ))}
+      </div>
+    </Grid>
+  </Section>
+
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</Base>

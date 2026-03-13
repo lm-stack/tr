@@ -1,0 +1,153 @@
+---
+import type { SiteData } from '../lib/data';
+
+interface Props {
+  site: SiteData;
+  breadcrumb?: string;
+  currentUrl: string;
+  isHome: boolean;
+}
+
+const { site, breadcrumb, currentUrl, isHome } = Astro.props;
+
+// Filter social URLs: exclude items where url is "#" or empty
+const validSocialUrls = site.social
+  ? site.social.filter((s) => s.url && s.url !== '#').map((s) => s.url)
+  : [];
+
+// --- BreadcrumbList ---
+const breadcrumbItems: Array<{ '@type': string; position: number; name: string; item?: string }> = [
+  {
+    '@type': 'ListItem',
+    position: 1,
+    name: 'Accueil',
+    item: site.url,
+  },
+];
+
+if (breadcrumb) {
+  breadcrumbItems.push({
+    '@type': 'ListItem',
+    position: 2,
+    name: breadcrumb,
+    item: `${site.url}${currentUrl}`,
+  });
+}
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbItems,
+};
+
+// --- Organization ---
+const organizationSchema: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${site.url}/#organization`,
+  name: site.name,
+  url: site.url,
+  logo: `${site.url}/favicon.svg`,
+};
+
+if (site.description) {
+  organizationSchema.description = site.description;
+}
+
+if (site.email) {
+  organizationSchema.email = site.email;
+}
+
+if (site.phone) {
+  organizationSchema.telephone = site.phone;
+}
+
+if (site.address) {
+  organizationSchema.address = site.address;
+}
+
+if (validSocialUrls.length > 0) {
+  organizationSchema.sameAs = validSocialUrls;
+}
+
+// --- WebSite (homepage only) ---
+const webSiteSchema = isHome
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: site.name,
+      url: site.url,
+    }
+  : null;
+
+// --- LocalBusiness (homepage only, if configured) ---
+let localBusinessSchema: Record<string, unknown> | null = null;
+
+if (isHome && site.localBusiness) {
+  localBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': site.localBusiness.type || 'LocalBusiness',
+    name: site.name,
+    url: site.url,
+    image: `${site.url}${site.ogImage}`,
+  };
+
+  if (site.email) {
+    localBusinessSchema.email = site.email;
+  }
+
+  if (site.phone) {
+    localBusinessSchema.telephone = site.phone;
+  }
+
+  if (site.localBusiness.address) {
+    localBusinessSchema.address = {
+      '@type': 'PostalAddress',
+      streetAddress: site.localBusiness.address.street,
+      addressLocality: site.localBusiness.address.locality,
+      postalCode: site.localBusiness.address.postalCode,
+      addressCountry: site.localBusiness.address.country,
+    };
+  }
+
+  if (site.localBusiness.geo) {
+    localBusinessSchema.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: site.localBusiness.geo.lat,
+      longitude: site.localBusiness.geo.lng,
+    };
+  }
+
+  if (validSocialUrls.length > 0) {
+    localBusinessSchema.sameAs = validSocialUrls;
+  }
+}
+---
+
+<script
+  type="application/ld+json"
+  data-pagefind-ignore
+  set:html={JSON.stringify(breadcrumbSchema)}
+/>
+
+<script
+  type="application/ld+json"
+  data-pagefind-ignore
+  set:html={JSON.stringify(organizationSchema)}
+/>
+
+{webSiteSchema && (
+  <script
+    type="application/ld+json"
+    data-pagefind-ignore
+    set:html={JSON.stringify(webSiteSchema)}
+  />
+)}
+
+{localBusinessSchema && (
+  <script
+    type="application/ld+json"
+    data-pagefind-ignore
+    set:html={JSON.stringify(localBusinessSchema)}
+  />
+)}

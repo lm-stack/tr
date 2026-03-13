@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import Grid from '../components/Grid.astro';
+import { Icon } from 'astro-icon/components';
+import { getEntry } from 'astro:content';
+import { toIconName, type AProposPageData } from '../lib/data';
+
+const page = await getEntry('pages', 'a-propos');
+const data = page!.data as AProposPageData;
+---
+
+<Base
+  seo={data.seo}
+  breadcrumb="À propos"
+>
+  <Hero title={data.hero.title} />
+
+  <Section>
+    <Grid cols="2-1" gap="xl">
+      <div>
+        <h2 class="mb-m">
+          <Icon name={toIconName(data.story.icon)} class="inline w-6 h-6 mr-3xs align-[-3px]" aria-hidden="true" />
+          {data.story.title}
+        </h2>
+        {data.story.paragraphs.map((p: string, i: number) => (
+          <p class={i < data.story.paragraphs.length - 1 ? 'mb-m' : ''}>{p}</p>
+        ))}
+      </div>
+      <Card title={data.sidebar.title} icon={data.sidebar.icon}>
+        <p>{data.sidebar.text}</p>
+      </Card>
+    </Grid>
+  </Section>
+</Base>

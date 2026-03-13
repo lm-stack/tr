@@ -1,0 +1,68 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  type?: 'text' | 'email' | 'tel' | 'textarea';
+  name: string;
+  label: string;
+  required?: boolean;
+  icon?: string;        // Phosphor icon name without prefix (e.g. "user", "envelope-simple")
+  placeholder?: string;
+  maxlength?: number;
+  autocomplete?: string;
+  rows?: number;         // textarea only, default 6
+}
+
+const {
+  type = 'text',
+  name,
+  label,
+  required = false,
+  icon,
+  placeholder,
+  maxlength,
+  autocomplete,
+  rows = 6,
+} = Astro.props;
+
+const isTextarea = type === 'textarea';
+const inputClasses = [
+  'w-full py-xs px-s border border-border rounded text-text-m transition-colors duration-300',
+  'focus:outline-none focus:border-primary',
+  isTextarea ? 'resize-y min-h-[120px]' : '',
+].filter(Boolean).join(' ');
+---
+
+<div class="mb-m">
+  <label class="block mb-2xs text-text-s font-medium text-black" for={name}>
+    {icon && (
+      <Icon name={`ph:${icon}`} class="inline w-4 h-4 mr-0.5 align-[-2px]" aria-hidden="true" />
+    )}
+    {label}{required && ' *'}
+  </label>
+  {isTextarea ? (
+    <textarea
+      id={name}
+      name={name}
+      rows={rows}
+      required={required}
+      aria-required={required ? 'true' : undefined}
+      class={inputClasses}
+      placeholder={placeholder}
+      maxlength={maxlength}
+    />
+  ) : (
+    <input
+      type={type}
+      id={name}
+      name={name}
+      required={required}
+      aria-required={required ? 'true' : undefined}
+      autocomplete={autocomplete}
+      maxlength={maxlength}
+      class={inputClasses}
+      placeholder={placeholder}
+    />
+  )}
+  <span id={`${name}-error`} class="form-error" role="alert"></span>
+</div>

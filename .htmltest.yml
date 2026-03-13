@@ -1,0 +1,11 @@
+DirectoryPath: dist
+CheckExternal: false
+CheckFavicon: false
+IgnoreInternalEmptyHash: true
+IgnoreCanonicalBrokenLinks: true
+IgnoreURLs:
+  - "/favicon.ico"
+  - "/favicon.svg"
+IgnoreAltEmpty: true
+IgnoreDirs:
+  - admin

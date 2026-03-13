@@ -1,0 +1,31 @@
+---
+import Section from '../Section.astro';
+import Button from '../Button.astro';
+
+interface Props {
+  title: string;
+  text?: string;
+  buttonLabel: string;
+  buttonUrl: string;
+  buttonVariant?: 'primary' | 'secondary' | 'outline' | 'outline-white' | 'dark';
+  background?: 'light' | 'primary' | 'dark';
+}
+
+const { title, text, buttonLabel, buttonUrl, buttonVariant = 'secondary', background = 'primary' } = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  light: 'bg-bg',
+  primary: 'bg-primary text-white',
+  dark: 'bg-black text-white',
+};
+
+const sectionClass = bgClasses[background] || bgClasses['primary'];
+---
+
+<Section class={sectionClass}>
+  <div class="text-center">
+    <h2 class="mb-s">{title}</h2>
+    {text && <p class="mb-l opacity-80">{text}</p>}
+    <Button href={buttonUrl} variant={buttonVariant}>{buttonLabel}</Button>
+  </div>
+</Section>

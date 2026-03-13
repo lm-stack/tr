@@ -1,0 +1,24 @@
+---
+import { Icon } from 'astro-icon/components';
+import { toIconName } from '../lib/data';
+
+interface Props {
+  title?: string;
+  icon?: string;
+  class?: string;
+}
+
+const { title, icon, class: className } = Astro.props;
+
+const iconName = icon ? toIconName(icon) : null;
+---
+
+<div class={`bg-white p-m shadow-card rounded-m ${className || ''}`}>
+  {title && (
+    <h3 class="flex items-center gap-2xs">
+      {iconName && <Icon name={iconName} class="w-6 h-6" aria-hidden="true" />}
+      {title}
+    </h3>
+  )}
+  <slot />
+</div>

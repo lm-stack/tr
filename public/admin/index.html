@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html data-color-mode="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Content Manager</title>
+  <!-- Widget "Besoin d'aide ?" — Personnaliser les infos ci-dessous -->
+  <style>
+    .lm-help-fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99999;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--help-color, #FFD838);
+      color: #191919;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s, background 0.2s;
+      font-family: -apple-system, system-ui, sans-serif;
+    }
+    .lm-help-fab:hover { transform: scale(1.08); opacity: 0.9; }
+    .lm-help-popup {
+      position: fixed;
+      bottom: 76px;
+      right: 20px;
+      z-index: 99999;
+      width: 280px;
+      background: #1a1a2e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: none;
+      font-family: -apple-system, system-ui, sans-serif;
+    }
+    .lm-help-popup.open { display: block; }
+    .lm-help-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .lm-help-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .lm-help-logo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .lm-help-brand {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+    .lm-help-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .lm-help-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .lm-help-item svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: var(--help-color, #FFD838);
+    }
+    .lm-help-item a, .lm-help-item span {
+      font-size: 13px;
+      color: #b0b0b0;
+      text-decoration: none;
+    }
+    .lm-help-item a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+  <!-- Sveltia CMS — version épinglée pour éviter les attaques supply-chain.
+       Pour mettre à jour : npm view @sveltia/cms version, puis modifier l'URL ci-dessous. -->
+  <script src="https://unpkg.com/@sveltia/cms@0.144.1/dist/sveltia-cms.js"></script>
+
+  <!--
+    Widget "Besoin d'aide ?"
+    À personnaliser pour chaque projet :
+    - Logo : remplacer "LM" par les initiales ou une image
+    - Nom : remplacer "Lausanne Marketing"
+    - Email : remplacer hello@lausanne.marketing
+    - URL : remplacer lausanne.marketing
+    - Couleur : modifier la variable --help-color dans le <style>
+  -->
+  <button class="lm-help-fab" onclick="this.nextElementSibling.classList.toggle('open')" title="Besoin d'aide ?">?</button>
+  <div class="lm-help-popup">
+    <div class="lm-help-header">
+      <div class="lm-help-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD2UlEQVRYw+2XXWgcVRTHfzPZnd1876ZJmpKkKClI0YdSS4mi1g98qILWQn1RKlpBBEXwyYe+tD75ZlUQK4gmVm1BrSSkik1jIrRJUzQfhm6+zCfJ7mY3M5v9mJ2d2bk+JN3NGhPTGBIfeuC+3HvPnP/c8z/nf68kfPXlwDvACcDD1lgEaABOO5aCvwkobJ2VAq8BkiR89eoW/vnfTZO3MTiAR2ab7Q4Ax1qLQkBINUkk7cxcYX4e5d6sm22DJC2O7JzAtsHhkDYOQDdsfvpVo6VDo7s/jhqxKCqUefetWo48UYYkgS2gqy9KTZWL2qpsFXf2xhgaT/LSkYocYLeVgnRacP+9RbxytJKwZjI1a/DIgRIOP+zJfHQ2mKLpikrr1QimJQCIJ2w+aPTz3qczjEwmN86BooI8qiqcnL8UZtqfYu+eAt5+eRdu16KLlRa0dy8Q1ix6fHEG/9QBuNSh0tymMjimc/Z8ACstNk7C3wbifN0cQnFKvPHCTupq3Zm14fEkN/pji+lK2ly+FmFs2uD9Bj9x3UYIONcUors/vjEARkpw9kKQQNjkgX3FPH94R+bo9aTNlc4Icd3OAXTqo2m6emOZudk5kw+/9OeQeN0ArvfF+KF1nnyXzKvHKikrzfK11xfn5qiesz+kWVxsnV9x5M1tKj92aLcHwEgJPvs2SFizeHB/MU8/6s0276hFW9dChnS3StE3qhOJpld8KxpPc6bBT0i11g/gxh8xmtpUXIrE8WfL8RTnZfpCZ0+MyVkjZ39w3mR4YnXGd/ZG+aophBDrAGBZgnNNIcKaxb69hTx1yLsspyk6uhew7dz9AyM6urF6nlOm4ONvAoz+Q1muADA4nqS5TUWW4eiTZexY6npWWtB+fbHsltuUP8XkjPGv9T40pvPJheAKjqwA0NKuMh1IUb1T4ZnHvdxqZGPTBr2+BIpTygwhYHQqidMpUZAvrzncbpmLP8/TP5RYvRUvxNI0/6IhBDy0v5i63dm6r/A6OHGsMsfZtATHn6tA2OsXn13lyuoAhieSDAwnkGWJQwdLcC4TE0+JA09JrnRMzBjU1RbiUjYuqjmeAyMJ1AULtyJxz935a5Lq8tUIX3w/B0ibJ8dJY1FGU6agbzDBgfsKkZfan27YBOdNbo7otLRrXP09ypmTd+FSNhFAdaWTPbvdmJbg8+/m6OyJkpcnZfgRCJnEdZuaKoWTr1fz2MGS/3whkYSvXiwnVSBkkrZXVzDFIeEtdWRUcVNvRE6HRE3VVj4P7lxK/ycAItsYPyIvvVJT2xA8BTQ6gNNL7ezFLX6eN4KnfgJeaL8GJ4gNgQAAAABJRU5ErkJggg==" alt="Lausanne Marketing"></div>
+      <div class="lm-help-brand">Lausanne Marketing</div>
+    </div>
+    <div class="lm-help-title">Besoin d'aide ?</div>
+    <div class="lm-help-item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
+      <a href="mailto:hello@lausanne.marketing">hello@lausanne.marketing</a>
+    </div>
+    <div class="lm-help-item">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5a17.92 17.92 0 0 1-8.716-2.247m0 0A9 9 0 0 1 3 12c0-1.47.353-2.856.978-4.082"/></svg>
+      <a href="https://lausanne.marketing" target="_blank" rel="noopener">lausanne.marketing</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('click', function(e) {
+      var popup = document.querySelector('.lm-help-popup');
+      var fab = document.querySelector('.lm-help-fab');
+      if (popup && fab && !popup.contains(e.target) && !fab.contains(e.target)) {
+        popup.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

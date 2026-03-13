@@ -1,0 +1,135 @@
+---
+import { Icon } from 'astro-icon/components';
+import { toIconName } from '../lib/data';
+import type { SiteData } from '../lib/data';
+
+interface Props {
+  site: SiteData;
+  footerDescription?: string;
+}
+
+const { site, footerDescription = '' } = Astro.props;
+
+const currentYear = new Date().getFullYear();
+
+const hasSocial = site.social && site.social.length > 0;
+
+// Flatten nav items (include children) for footer links
+const footerLinks = site.nav.flatMap((item) => {
+  if (item.children && item.children.length > 0) {
+    return item.children;
+  }
+  return [item];
+});
+---
+
+<footer
+  class="bg-primary text-white py-3xl"
+  role="contentinfo"
+  data-pagefind-ignore
+>
+  <div class="max-w-container mx-auto px-m">
+    {/* Grid */}
+    <div
+      class:list={[
+        'grid gap-xl',
+        hasSocial
+          ? 'grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr]'
+          : 'grid-cols-1 md:grid-cols-[2fr_1fr_1fr]',
+      ]}
+    >
+      {/* Column 1: Logo + description */}
+      <div>
+        <div class="flex items-center gap-xs mb-s">
+          <Icon name={toIconName(site.logoIcon)} class="w-8 h-8 text-white" aria-hidden="true" />
+          <span class="font-bold text-h4">
+            {site.logoText}
+          </span>
+        </div>
+        {footerDescription && (
+          <p class="text-text-s opacity-80 leading-relaxed">{footerDescription}</p>
+        )}
+      </div>
+
+      {/* Column 2: Navigation */}
+      <div>
+        <p class="font-bold mb-s text-text-s uppercase tracking-wider">Navigation</p>
+        <nav class="flex flex-col gap-2xs" aria-label="Navigation footer">
+          {footerLinks.map((link) => (
+            <a
+              href={link.url}
+              class="text-white opacity-80 hover:opacity-100 transition-opacity duration-300 text-text-s"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      {/* Column 3: Contact */}
+      <div>
+        <p class="font-bold mb-s text-text-s uppercase tracking-wider">Contact</p>
+        <div class="flex flex-col gap-xs">
+          <a
+            href={`mailto:${site.email}`}
+            class="text-white opacity-80 hover:opacity-100 transition-opacity duration-300 text-text-s inline-flex items-center gap-2xs"
+          >
+            <Icon name="ph:envelope-simple" class="w-4 h-4 shrink-0" aria-hidden="true" />
+            {site.email}
+          </a>
+          {site.phone && (
+            <a
+              href={`tel:${site.phone.replace(/\s/g, '')}`}
+              class="text-white opacity-80 hover:opacity-100 transition-opacity duration-300 text-text-s inline-flex items-center gap-2xs"
+            >
+              <Icon name="ph:phone" class="w-4 h-4 shrink-0" aria-hidden="true" />
+              {site.phone}
+            </a>
+          )}
+          {site.address && (
+            <p class="text-white opacity-80 text-text-s inline-flex items-start gap-2xs">
+              <Icon name="ph:map-pin" class="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+              <span>{site.address}</span>
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Column 4 (optional): Social links */}
+      {hasSocial && (
+        <div>
+          <p class="font-bold mb-s text-text-s uppercase tracking-wider">Suivez-nous</p>
+          <div class="flex flex-wrap gap-xs">
+            {site.social!.map((social) => (
+              <a
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300 inline-flex items-center justify-center"
+                aria-label={social.label}
+              >
+                <Icon name={toIconName(social.icon)} class="w-5 h-5 text-white" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+
+    {/* Bottom */}
+    <div class="border-t border-white/20 mt-xl pt-m text-text-xs opacity-60 text-center">
+      <p>&copy; {currentYear} {site.copyright}. Tous droits réservés.</p>
+      <p class="mt-3xs">
+        Fait avec passion par{' '}
+        <a
+          href="https://lausanne.marketing"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-white underline hover:opacity-80 transition-opacity duration-300"
+        >
+          Lausanne Marketing
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>

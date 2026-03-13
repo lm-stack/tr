@@ -1,0 +1,89 @@
+@import "tailwindcss";
+@config "../../tailwind.config.mjs";
+@import "./fonts.css";
+
+/* Reset additions beyond Tailwind preflight */
+@layer base {
+  ul, ol { list-style: none; }
+
+  /* Body offset for fixed header */
+  body {
+    padding-top: 60px;
+    font-family: var(--font-family-primary, system-ui, -apple-system, sans-serif);
+  }
+
+  /* Link defaults */
+  a {
+    color: var(--color-primary, #235265);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover { color: var(--color-secondary, #F0816B); }
+
+  /* Heading defaults */
+  h1, h2, h3, h4 {
+    color: var(--color-black, #000000);
+  }
+  h1 { @apply text-h1; }
+  h2 { @apply text-h2; }
+  h3 { @apply text-h3; }
+  h4 { @apply text-h4; }
+}
+
+/* Pagefind UI overrides */
+.search__inner {
+  --pagefind-ui-scale: 1;
+  --pagefind-ui-primary: var(--color-primary, #235265);
+  --pagefind-ui-text: var(--color-black, #000000);
+  --pagefind-ui-background: #FFFFFF;
+  --pagefind-ui-border: var(--color-border, #F5F8F9);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 12px;
+  --pagefind-ui-font: var(--font-family-primary, system-ui, -apple-system, sans-serif);
+}
+
+/* Form feedback */
+.form-feedback {
+  margin-top: var(--spacing-s, 16px);
+  padding: var(--spacing-xs, 12px) var(--spacing-s, 16px);
+  border-radius: 12px;
+  font-size: var(--font-size-text-s, 0.875rem);
+}
+.form-feedback--success {
+  background-color: var(--color-success-bg, #E8F5E9);
+  color: var(--color-success, #2E7D32);
+  border: 1px solid var(--color-success-border, #A5D6A7);
+}
+.form-feedback--error {
+  background-color: var(--color-error-bg, #FBE9E7);
+  color: var(--color-error, #C62828);
+  border: 1px solid var(--color-error-border, #EF9A9A);
+}
+.form-input--error,
+.form-input--error:focus {
+  border-color: var(--color-error, #C62828) !important;
+}
+.form-error {
+  display: block;
+  margin-top: var(--spacing-2xs, 8px);
+  font-size: var(--font-size-text-xs, 0.75rem);
+  color: var(--color-error, #C62828);
+  min-height: 0;
+}
+
+/* Header scrolled state */
+#header.scrolled {
+  box-shadow: var(--shadow-card, 0 4px 12px #EEF1F3);
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Desktop dropdown open state */
+.header__dropdown.open .header__dropdown-menu {
+  display: block;
+}
+
+/* Mobile menu open state */
+#mobile-menu.open {
+  display: flex;
+}

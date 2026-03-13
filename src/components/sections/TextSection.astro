@@ -1,0 +1,26 @@
+---
+import Section from '../Section.astro';
+
+interface Props {
+  title?: string;
+  paragraphs: string[];
+  background?: 'light' | 'primary' | 'dark';
+}
+
+const { title, paragraphs, background } = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  light: 'bg-bg',
+  primary: 'bg-primary text-white',
+  dark: 'bg-black text-white',
+};
+
+const sectionClass = background ? bgClasses[background] : '';
+---
+
+<Section class={sectionClass}>
+  {title && <h2 class="mb-m">{title}</h2>}
+  {paragraphs.map((p, i) => (
+    <p class={i < paragraphs.length - 1 ? 'mb-m' : ''}>{p}</p>
+  ))}
+</Section>

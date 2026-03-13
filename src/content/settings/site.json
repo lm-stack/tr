@@ -1,0 +1,19 @@
+{
+  "url": "https://example.com",
+  "name": "Nom du site",
+  "lang": "fr",
+  "description": "Description de votre site en une ou deux phrases. Personnalisez ce texte pour décrire votre activité et attirer les visiteurs (150-160 caractères).",
+  "ogImage": "/og-image.jpg",
+  "logoText": "Blueprint",
+  "logoIcon": "ph-blueprint",
+  "copyright": "Blueprint",
+  "webhookUrl": "https://n8n.example.com/webhook/contact",
+  "webhookToken": "",
+  "turnstileSiteKey": "0x0000000000000000000000",
+  "searchUrl": "/recherche/",
+  "nav": [
+    { "url": "/", "label": "Accueil", "icon": "ph-house" },
+    { "url": "/a-propos/", "label": "À propos", "icon": "ph-users" },
+    { "url": "/contact/", "label": "Contact", "icon": "ph-envelope-simple" }
+  ]
+}

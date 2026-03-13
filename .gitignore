@@ -1,0 +1,11 @@
+# Build output
+dist/
+_site/
+.astro/
+node_modules/
+
+# Pagefind (generated at build)
+public/pagefind/
+
+# Cache
+.cache/

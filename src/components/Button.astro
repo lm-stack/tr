@@ -1,0 +1,52 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'outline' | 'outline-white' | 'dark';
+  icon?: string;
+  full?: boolean;
+  type?: 'button' | 'submit';
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  icon,
+  full = false,
+  type = 'button',
+  disabled = false,
+  class: className,
+} = Astro.props;
+
+const base = 'inline-flex items-center justify-center py-xs px-m text-text-s font-medium rounded cursor-pointer gap-2xs transition-all duration-300 hover:-translate-y-0.5 no-underline';
+
+const variants: Record<string, string> = {
+  primary: 'bg-primary text-white hover:bg-black hover:text-white',
+  secondary: 'bg-secondary text-white',
+  outline: 'bg-transparent border border-primary text-primary hover:bg-primary hover:text-white',
+  'outline-white': 'bg-transparent border border-white text-white hover:bg-white hover:text-black',
+  dark: 'bg-black text-white hover:bg-text hover:text-white',
+};
+
+const classes = [
+  base,
+  variants[variant],
+  full ? 'w-full' : '',
+  className || '',
+].filter(Boolean).join(' ');
+---
+
+{href ? (
+  <a href={href} class={classes}>
+    {icon && <Icon name={`ph:${icon}`} class="w-4 h-4" aria-hidden="true" />}
+    <slot />
+  </a>
+) : (
+  <button type={type} disabled={disabled} class={classes}>
+    {icon && <Icon name={`ph:${icon}`} class="w-4 h-4" aria-hidden="true" />}
+    <slot />
+  </button>
+)}

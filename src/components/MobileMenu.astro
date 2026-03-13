@@ -1,0 +1,63 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { SiteData } from '../lib/data';
+
+interface Props {
+  site: SiteData;
+}
+
+const { site } = Astro.props;
+---
+
+<nav
+  id="mobile-menu"
+  class="hidden fixed inset-0 bg-white flex-col items-center justify-center gap-xl z-[101]"
+  role="dialog"
+  aria-label="Menu mobile"
+  aria-hidden="true"
+>
+  {/* Close button */}
+  <button
+    id="mobile-close"
+    class="absolute top-6 right-6 bg-transparent border-none cursor-pointer text-h3 text-black"
+    aria-label="Fermer le menu"
+  >
+    <Icon name="ph:x" class="w-8 h-8" />
+  </button>
+
+  {/* Nav items */}
+  {site.nav.map((item) => {
+    if (item.children && item.children.length > 0) {
+      return (
+        <div class="header__mobile-dropdown flex flex-col items-center">
+          <button
+            class="header__mobile-dropdown-trigger bg-transparent border-none cursor-pointer text-h3 text-black font-inherit inline-flex items-center gap-2xs"
+            aria-expanded="false"
+          >
+            {item.label}
+            <Icon name="ph:caret-down" class="w-5 h-5 transition-transform duration-300" />
+          </button>
+          <div class="header__mobile-submenu max-h-0 overflow-hidden transition-all duration-300 flex flex-col gap-s px-m">
+            {item.children.map((child) => (
+              <a
+                href={child.url}
+                class="text-h4 text-black hover:text-primary transition-colors duration-300 text-center"
+              >
+                {child.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <a
+        href={item.url}
+        class="text-h3 text-black hover:text-primary transition-colors duration-300"
+      >
+        {item.label}
+      </a>
+    );
+  })}
+</nav>

@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import Grid from '../components/Grid.astro';
+import { getEntry } from 'astro:content';
+import type { HomePageData } from '../lib/data';
+
+const home = await getEntry('pages', 'home');
+const data = home!.data as HomePageData;
+---
+
+<Base
+  seo={data.seo}
+  isHome
+>
+  <Hero title={data.hero.title} subtitle={data.hero.subtitle} />
+
+  <Section>
+    <h2 class="mb-m">{data.content.title}</h2>
+    <Grid cols="3" gap="l">
+      {data.content.cards.map((card) => (
+        <Card title={card.title} icon={card.icon}>
+          <p>{card.text}</p>
+        </Card>
+      ))}
+    </Grid>
+  </Section>
+</Base>

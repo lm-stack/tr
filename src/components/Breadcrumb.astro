@@ -1,0 +1,15 @@
+---
+interface Props {
+  breadcrumb: string;
+}
+
+const { breadcrumb } = Astro.props;
+---
+
+<nav aria-label="Fil d'Ariane" class="max-w-container mx-auto px-m pt-m" data-pagefind-ignore>
+  <ol class="flex items-center gap-2xs text-text-s text-text">
+    <li><a href="/" class="hover:text-primary transition-colors duration-300">Accueil</a></li>
+    <li aria-hidden="true">/</li>
+    <li aria-current="page">{breadcrumb}</li>
+  </ol>
+</nav>

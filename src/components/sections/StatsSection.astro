@@ -1,0 +1,33 @@
+---
+import Section from '../Section.astro';
+import Grid from '../Grid.astro';
+
+interface Props {
+  items: Array<{ value: string; label: string }>;
+  background?: 'light' | 'primary' | 'dark';
+}
+
+const { items, background } = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  light: 'bg-bg',
+  primary: 'bg-primary text-white',
+  dark: 'bg-black text-white',
+};
+
+const sectionClass = background ? bgClasses[background] : '';
+const onDark = background === 'primary' || background === 'dark';
+const valueClass = onDark ? 'text-white' : 'text-primary';
+const labelClass = onDark ? 'text-white/70' : 'text-text';
+---
+
+<Section class={sectionClass}>
+  <Grid cols="4" gap="xl">
+    {items.map((item) => (
+      <div class="text-center">
+        <p class={`text-h1 font-bold ${valueClass}`}>{item.value}</p>
+        <p class={`text-text-s ${labelClass}`}>{item.label}</p>
+      </div>
+    ))}
+  </Grid>
+</Section>

@@ -1,0 +1,1508 @@
+---
+import Bare from '../layouts/Bare.astro';
+import { getSiteData, toIconName } from '../lib/data';
+import { Icon } from 'astro-icon/components';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import Grid from '../components/Grid.astro';
+
+const site = await getSiteData();
+
+/* ── Color tokens ── */
+const brandColors = [
+  { name: 'Primary',   hex: '#235265', var: 'primary',   tw: 'bg-primary / text-primary' },
+  { name: 'Secondary', hex: '#F0816B', var: 'secondary', tw: 'bg-secondary / text-secondary' },
+  { name: 'Third',     hex: '#97BCBB', var: 'third',     tw: 'bg-third / text-third' },
+  { name: 'Accent',    hex: '#E8A838', var: 'accent',    tw: 'bg-accent / text-accent' },
+];
+const neutralColors = [
+  { name: 'Background', hex: '#F3F9F9', var: 'bg',     tw: 'bg-bg' },
+  { name: 'Border',     hex: '#F5F8F9', var: 'border', tw: 'bg-border' },
+  { name: 'Text',       hex: '#828282', var: 'text',   tw: 'bg-text / text-text' },
+  { name: 'Shadow',     hex: '#EEF1F3', var: 'shadow', tw: 'bg-shadow' },
+  { name: 'White',      hex: '#FFFFFF', var: 'white',  tw: 'bg-white' },
+  { name: 'Black',      hex: '#000000', var: 'black',  tw: 'bg-black / text-black' },
+];
+
+/* ── Typography tokens ── */
+const headings = [
+  { label: 'H1', class: 'text-h1', value: 'clamp(2.441rem, 1.22vi + 2.14rem, 3.052rem)', lh: '1.2' },
+  { label: 'H2', class: 'text-h2', value: 'clamp(1.953rem, 0.98vi + 1.71rem, 2.441rem)', lh: '1.2' },
+  { label: 'H3', class: 'text-h3', value: 'clamp(1.563rem, 0.78vi + 1.37rem, 1.953rem)', lh: '1.3' },
+  { label: 'H4', class: 'text-h4', value: 'clamp(1.25rem, 0.63vi + 1.09rem, 1.563rem)', lh: '1.3' },
+];
+const textSizes = [
+  { label: 'text-xl', class: 'text-text-xl', value: 'clamp(1.125rem, 0.25vi + 1.06rem, 1.25rem)', lh: '1.6' },
+  { label: 'text-l',  class: 'text-text-l',  value: 'clamp(1rem, 0.25vi + 0.94rem, 1.125rem)',     lh: '1.6' },
+  { label: 'text-m',  class: 'text-text-m',  value: '1rem',     lh: '1.6' },
+  { label: 'text-s',  class: 'text-text-s',  value: '0.875rem', lh: '1.6' },
+  { label: 'text-xs', class: 'text-text-xs', value: '0.75rem',  lh: '1.6' },
+];
+
+/* ── Spacing tokens ── */
+const spacings = [
+  { label: '3xs', value: '4px',   tw: 'p-3xs / gap-3xs / m-3xs' },
+  { label: '2xs', value: '8px',   tw: 'p-2xs / gap-2xs / m-2xs' },
+  { label: 'xs',  value: '12px',  tw: 'p-xs / gap-xs / m-xs' },
+  { label: 's',   value: '16px',  tw: 'p-s / gap-s / m-s' },
+  { label: 'm',   value: '24px',  tw: 'p-m / gap-m / m-m' },
+  { label: 'l',   value: 'clamp(1.5rem, 1vi + 1.25rem, 2rem)',     tw: 'p-l / gap-l / m-l' },
+  { label: 'xl',  value: 'clamp(2rem, 2vi + 1.5rem, 3rem)',        tw: 'p-xl / gap-xl / m-xl' },
+  { label: '2xl', value: 'clamp(2.5rem, 3vi + 1.75rem, 4rem)',     tw: 'p-2xl / gap-2xl / m-2xl' },
+  { label: '3xl', value: 'clamp(3.5rem, 5vi + 2.25rem, 6rem)',     tw: 'p-3xl / gap-3xl / m-3xl' },
+  { label: '4xl', value: 'clamp(4.5rem, 7vi + 2.75rem, 8rem)',     tw: 'p-4xl / gap-4xl / m-4xl' },
+];
+
+/* ── Icon list ── */
+const icons = [
+  'ph:house', 'ph:user', 'ph:envelope-simple', 'ph:phone', 'ph:map-pin',
+  'ph:calendar', 'ph:clock', 'ph:gear', 'ph:magnifying-glass', 'ph:heart',
+  'ph:star', 'ph:check', 'ph:x', 'ph:arrow-right', 'ph:arrow-left',
+  'ph:caret-down', 'ph:caret-up', 'ph:caret-right', 'ph:caret-left',
+  'ph:info', 'ph:warning', 'ph:check-circle', 'ph:x-circle',
+  'ph:eye', 'ph:pencil-simple', 'ph:trash', 'ph:download', 'ph:upload',
+  'ph:share-network', 'ph:link', 'ph:copy', 'ph:chat-text',
+  'ph:image', 'ph:file-text', 'ph:folder', 'ph:lightning',
+  'ph:paper-plane-tilt', 'ph:paint-roller', 'ph:palette', 'ph:blueprint',
+];
+---
+
+<Bare seo={{ title: 'Design System', description: 'Référence visuelle du design system : couleurs, typographie, espacements, grilles, composants et icônes.' }} noindex>
+
+<style>
+  /* ══════════════════════════════════════════════════
+     DS — Custom Properties
+     ══════════════════════════════════════════════════ */
+  .ds {
+    --ds-dark: color-mix(in srgb, #235265 95%, black);
+    --ds-darker: color-mix(in srgb, #235265 80%, black);
+    --ds-glow: color-mix(in srgb, #F0816B 40%, transparent);
+    --ds-surface: color-mix(in srgb, white 60%, #F3F9F9);
+    --ds-muted: color-mix(in srgb, #828282 50%, transparent);
+    --ds-radius: 10px;
+    --ds-transition: .35s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ══════════════════════════════════════════════════
+     Layout: sidebar + main
+     ══════════════════════════════════════════════════ */
+  .ds-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0 clamp(1.5rem, 1vi + 1.25rem, 2rem);
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  @media (max-width: 991px) {
+    .ds-layout { grid-template-columns: 1fr; }
+  }
+
+  /* ══════════════════════════════════════════════════
+     Sidebar
+     ══════════════════════════════════════════════════ */
+  .ds-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    padding: clamp(2rem, 2vi + 1.5rem, 3rem) 24px;
+    border-right: 1px solid color-mix(in srgb, #F5F8F9 60%, transparent);
+  }
+  .ds-sidebar__label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: color-mix(in srgb, #235265 50%, transparent);
+    margin-bottom: 12px;
+    padding-left: 12px;
+  }
+  .ds-sidebar__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    margin: 0 -12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #828282;
+    text-decoration: none;
+    transition: all var(--ds-transition);
+  }
+  .ds-sidebar__link:hover {
+    color: #235265;
+    background: color-mix(in srgb, #235265 6%, transparent);
+  }
+  .ds-sidebar__link.active {
+    color: #235265;
+    background: color-mix(in srgb, #235265 8%, transparent);
+    font-weight: 600;
+  }
+  .ds-sidebar__link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 3px;
+    background: #235265;
+  }
+  .ds-sidebar__close { display: none; }
+
+  /* Mobile sidebar trigger — hidden on desktop */
+  #ds-sidebar-trigger { display: none; }
+  #ds-sidebar-overlay { display: none; }
+
+  @media (max-width: 991px) {
+    .ds-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 260px;
+      height: 100dvh;
+      z-index: 101;
+      background: white;
+      border-right: none;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+    }
+    .ds-sidebar.is-open {
+      transform: translateX(0);
+    }
+    #ds-sidebar-trigger {
+      display: flex;
+      position: fixed;
+      right: 0;
+      top: 25%;
+      z-index: 51;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--ds-radius) 0 0 var(--ds-radius);
+      background: white;
+      border: none;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: -3px 2px 12px rgba(0,0,0,0.12);
+      color: #235265;
+    }
+    #ds-sidebar-overlay.is-open {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 100;
+      backdrop-filter: blur(2px);
+    }
+    .ds-sidebar__close {
+      display: flex;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: none;
+      background: color-mix(in srgb, #F5F8F9 60%, transparent);
+      cursor: pointer;
+      font-size: 16px;
+      align-items: center;
+      justify-content: center;
+      color: #828282;
+    }
+  }
+
+  /* ══════════════════════════════════════════════════
+     Main content area
+     ══════════════════════════════════════════════════ */
+  .ds-main {
+    padding: clamp(2rem, 2vi + 1.5rem, 3rem) clamp(1rem, 2vi + 0.5rem, 2rem);
+    min-width: 0;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Hero
+     ══════════════════════════════════════════════════ */
+  .ds-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: clamp(3rem, 4vi + 2rem, 5rem) 24px clamp(2rem, 3vi + 1rem, 3.5rem);
+    margin-bottom: clamp(2rem, 3vi + 1rem, 3rem);
+    background: white;
+    border-radius: var(--ds-radius);
+  }
+  .ds-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, #F0816B 12%, transparent);
+    color: #F0816B;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .ds-hero__title {
+    font-size: clamp(2.441rem, 1.22vi + 2.14rem, 3.052rem);
+    font-weight: 800;
+    color: #000;
+    line-height: 1.1;
+    margin: 0 0 8px;
+  }
+  .ds-hero__site {
+    font-size: clamp(1.25rem, 0.63vi + 1.09rem, 1.563rem);
+    color: #235265;
+    font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .ds-hero__credit {
+    font-size: 14px;
+    color: #828282;
+    margin: 0 0 24px;
+  }
+  .ds-hero__credit a {
+    color: #235265;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Sections
+     ══════════════════════════════════════════════════ */
+  .ds-section {
+    margin-bottom: clamp(2.5rem, 3vi + 1.75rem, 4rem);
+    overflow-x: auto;
+  }
+  .ds-section__title {
+    font-size: clamp(1.563rem, 0.78vi + 1.37rem, 1.953rem);
+    font-weight: 700;
+    color: #000;
+    margin: 0 0 8px;
+    line-height: 1.3;
+  }
+  .ds-section__desc {
+    font-size: 15px;
+    color: #828282;
+    margin: 0 0 clamp(1.5rem, 1vi + 1.25rem, 2rem);
+  }
+  .ds-sub {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: color-mix(in srgb, #235265 60%, transparent);
+    margin: clamp(1.5rem, 1vi + 1.25rem, 2rem) 0 12px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Color swatches
+     ══════════════════════════════════════════════════ */
+  .ds-colors {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ds-color {
+    display: flex;
+    align-items: stretch;
+    border-radius: var(--ds-radius);
+    overflow: hidden;
+    transition: transform var(--ds-transition), box-shadow var(--ds-transition);
+    cursor: default;
+    min-height: 64px;
+  }
+  .ds-color:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px color-mix(in srgb, #EEF1F3 80%, transparent);
+  }
+  .ds-color__fill {
+    flex: 0 0 120px;
+  }
+  .ds-color__info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 1vi + 0.5rem, 1.5rem);
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid #F5F8F9;
+    border-left: none;
+    min-width: 0;
+  }
+  @media (max-width: 767px) {
+    .ds-color__info { flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 12px; }
+  }
+  .ds-color__name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+    min-width: 100px;
+  }
+  .ds-color__hex {
+    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    color: #235265;
+    background: color-mix(in srgb, #235265 6%, transparent);
+    padding: 3px 8px;
+    border-radius: 5px;
+    margin: 0;
+    white-space: nowrap;
+  }
+  .ds-color__classes {
+    font-size: 12px;
+    color: #828282;
+    font-family: monospace;
+    margin: 0 0 0 auto;
+  }
+  .ds-color__classes .ds-tag {
+    display: inline-block;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: color-mix(in srgb, #235265 7%, transparent);
+    color: #235265;
+    margin: 2px;
+  }
+  @media (max-width: 767px) {
+    .ds-color__classes { margin-left: 0; }
+  }
+
+  /* ══════════════════════════════════════════════════
+     Typography specimens
+     ══════════════════════════════════════════════════ */
+  .ds-type-row {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 1vi + 0.5rem, 1.5rem);
+    padding: 16px 0;
+    border-bottom: 1px solid color-mix(in srgb, #F5F8F9 80%, transparent);
+  }
+  .ds-type-row:last-child { border-bottom: none; }
+  .ds-type-label {
+    min-width: 100px;
+    flex-shrink: 0;
+  }
+  .ds-type-label__name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #235265;
+    font-family: monospace;
+  }
+  .ds-type-label__meta {
+    font-size: 11px;
+    color: #828282;
+    font-family: monospace;
+    margin-top: 2px;
+  }
+  .ds-type-specimen {
+    color: #000;
+    line-height: 1.2;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Spacing bars
+     ══════════════════════════════════════════════════ */
+  .ds-space-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0;
+  }
+  .ds-space-label {
+    min-width: 60px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #235265;
+    font-family: monospace;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .ds-space-bar {
+    height: 24px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #235265, #97BCBB);
+    transition: width var(--ds-transition);
+  }
+  .ds-space-value {
+    font-size: 11px;
+    color: #828282;
+    font-family: monospace;
+    flex-shrink: 0;
+    min-width: 100px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Grid demos
+     ══════════════════════════════════════════════════ */
+  .ds-grid-demo {
+    margin-bottom: 20px;
+  }
+  .ds-grid-demo__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #235265;
+    font-family: monospace;
+    margin-bottom: 8px;
+  }
+  .ds-grid-cell {
+    background: color-mix(in srgb, #235265 8%, transparent);
+    border: 1px dashed color-mix(in srgb, #235265 20%, transparent);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #235265;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Button showcase
+     ══════════════════════════════════════════════════ */
+  .ds-btn-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Card demo
+     ══════════════════════════════════════════════════ */
+  .ds-card-demo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Dark panel (for outline-white buttons)
+     ══════════════════════════════════════════════════ */
+  .ds-dark-panel {
+    background: #000;
+    border-radius: var(--ds-radius);
+    padding: 32px;
+    margin-top: 20px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Forms showcase
+     ══════════════════════════════════════════════════ */
+  .ds-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Icon grid
+     ══════════════════════════════════════════════════ */
+  .ds-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+  .ds-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 8px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    transition: all var(--ds-transition);
+  }
+  .ds-icon-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+  .ds-icon-item__name {
+    font-size: 10px;
+    color: #828282;
+    font-family: monospace;
+    text-align: center;
+    word-break: break-all;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Reference table
+     ══════════════════════════════════════════════════ */
+  .ds-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .ds-table th {
+    text-align: left;
+    padding: 10px 14px;
+    background: color-mix(in srgb, #235265 6%, transparent);
+    color: #235265;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 2px solid color-mix(in srgb, #235265 12%, transparent);
+  }
+  .ds-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid color-mix(in srgb, #F5F8F9 80%, transparent);
+    color: #000;
+  }
+  .ds-table tr:hover td {
+    background: color-mix(in srgb, #F3F9F9 50%, transparent);
+  }
+
+  /* ══════════════════════════════════════════════════
+     Chips & inline code
+     ══════════════════════════════════════════════════ */
+  .ds-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: color-mix(in srgb, #235265 8%, transparent);
+    color: #235265;
+    font-size: 12px;
+    font-family: monospace;
+    font-weight: 500;
+  }
+  .ds-code {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: color-mix(in srgb, #000 6%, transparent);
+    color: #000;
+    font-size: 12px;
+    font-family: monospace;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Radius showcase
+     ══════════════════════════════════════════════════ */
+  .ds-radius-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+  }
+  .ds-radius-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .ds-radius-box {
+    width: 72px;
+    height: 72px;
+    background: color-mix(in srgb, #235265 12%, transparent);
+    border: 2px solid #235265;
+  }
+
+  /* ══════════════════════════════════════════════════
+     Reveal animation
+     ══════════════════════════════════════════════════ */
+  .ds-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .ds-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<div class="ds">
+
+  <!-- Mobile sidebar trigger -->
+  <button id="ds-sidebar-trigger" aria-label="Ouvrir la navigation" aria-expanded="false" aria-controls="ds-sidebar">
+    <Icon name="ph:list" class="w-6 h-6" />
+  </button>
+  <div id="ds-sidebar-overlay"></div>
+
+  <div class="ds-layout">
+
+    <!-- ════════════════════════════════════════════
+         Sidebar
+         ════════════════════════════════════════════ -->
+    <aside id="ds-sidebar" class="ds-sidebar">
+      <button id="ds-sidebar-close" class="ds-sidebar__close" aria-label="Fermer la navigation">&times;</button>
+      <nav id="ds-nav">
+        <span class="ds-sidebar__label">Composants</span>
+        <a href="#logo" class="ds-sidebar__link"><Icon name="ph:fingerprint" class="w-4 h-4" /> Logo</a>
+        <a href="#couleurs" class="ds-sidebar__link"><Icon name="ph:palette" class="w-4 h-4" /> Couleurs</a>
+        <a href="#typo" class="ds-sidebar__link"><Icon name="ph:text-aa" class="w-4 h-4" /> Typographie</a>
+        <a href="#espacements" class="ds-sidebar__link"><Icon name="ph:arrows-out-line-horizontal" class="w-4 h-4" /> Espacements</a>
+        <a href="#grilles" class="ds-sidebar__link"><Icon name="ph:grid-four" class="w-4 h-4" /> Grilles</a>
+        <a href="#boutons" class="ds-sidebar__link"><Icon name="ph:cursor-click" class="w-4 h-4" /> Boutons</a>
+        <a href="#cartes" class="ds-sidebar__link"><Icon name="ph:cards" class="w-4 h-4" /> Cartes</a>
+        <a href="#formulaires" class="ds-sidebar__link"><Icon name="ph:textbox" class="w-4 h-4" /> Formulaires</a>
+        <a href="#icones" class="ds-sidebar__link"><Icon name="ph:smiley" class="w-4 h-4" /> Icônes</a>
+        <a href="#utilitaires" class="ds-sidebar__link"><Icon name="ph:wrench" class="w-4 h-4" /> Utilitaires</a>
+      </nav>
+    </aside>
+
+    <!-- ════════════════════════════════════════════
+         Main content
+         ════════════════════════════════════════════ -->
+    <div class="ds-main">
+
+      <!-- ────────── Hero ────────── -->
+      <div class="ds-hero">
+        <span class="ds-hero__badge">
+          <Icon name="ph:lock-simple" class="w-4 h-4" /> Documentation interne
+        </span>
+        <h1 class="ds-hero__title">Design System</h1>
+        <p class="ds-hero__site">{site.name}</p>
+        <p class="ds-hero__credit">par <a href="https://lausanne.marketing" target="_blank" rel="noopener">Lausanne Marketing</a></p>
+        <Button href="/" variant="outline" icon="arrow-left">Retour au site</Button>
+      </div>
+
+
+      <!-- ────────────────────────────────────────
+           #logo — Logo / Identité
+           ──────────────────────────────────────── -->
+      <section id="logo" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:fingerprint" class="inline w-6 h-6 align-[-3px]" /> Logo &amp; identité
+        </h2>
+        <p class="ds-section__desc">Identité visuelle du site : logo texte et icône.</p>
+
+        <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:center;">
+          <!-- Logo texte -->
+          <div style="background:white;border-radius:var(--ds-radius);padding:24px 32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#828282;margin:0 0 8px;">Logo texte</p>
+            <p style="font-size:clamp(1.25rem,0.63vi+1.09rem,1.563rem);font-weight:700;color:#000;margin:0;">
+              <Icon name={toIconName(site.logoIcon)} class="inline w-6 h-6 align-[-3px]" />
+              {site.logoText}
+            </p>
+            <p style="font-size:12px;color:#828282;font-family:monospace;margin:4px 0 0;">logoText: "{site.logoText}"</p>
+          </div>
+
+          <!-- Logo icône -->
+          <div style="background:white;border-radius:var(--ds-radius);padding:24px 32px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <p style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#828282;margin:0 0 8px;">Icône logo</p>
+            <div style="display:flex;align-items:center;gap:16px;">
+              <Icon name={toIconName(site.logoIcon)} class="w-10 h-10 text-primary" />
+              <div>
+                <p style="font-size:14px;font-weight:600;color:#000;margin:0;">{site.logoIcon}</p>
+                <p style="font-size:12px;color:#828282;margin:2px 0 0;">Phosphor Icons</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:13px;color:#828282;margin-top:16px;">
+          <Icon name="ph:info" class="inline w-4 h-4 align-[-2px]" />
+          Les icônes proviennent de <a href="https://phosphoricons.com" target="_blank" rel="noopener" style="color:#235265;text-decoration:underline;">Phosphor Icons</a> via <span class="ds-code">astro-icon</span> + <span class="ds-code">@iconify-json/ph</span>.
+        </p>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #couleurs — Couleurs
+           ──────────────────────────────────────── -->
+      <section id="couleurs" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:palette" class="inline w-6 h-6 align-[-3px]" /> Couleurs
+        </h2>
+        <p class="ds-section__desc">Tokens de couleur définis dans <span class="ds-code">tailwind.config.mjs</span>.</p>
+
+        <p class="ds-sub">Couleurs de marque</p>
+        <div class="ds-colors">
+          {brandColors.map(c => (
+            <div class="ds-color">
+              <div class="ds-color__fill" style={`background:${c.hex}`}></div>
+              <div class="ds-color__info">
+                <span class="ds-color__name">{c.name}</span>
+                <span class="ds-color__hex">{c.hex}</span>
+                <span class="ds-color__classes">
+                  {c.tw.split(' / ').map(cls => (
+                    <span class="ds-tag">{cls}</span>
+                  ))}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p class="ds-sub">Neutres et utilitaires</p>
+        <div class="ds-colors">
+          {neutralColors.map(c => (
+            <div class="ds-color">
+              <div class="ds-color__fill" style={`background:${c.hex};${c.hex === '#FFFFFF' ? 'border:1px solid #F5F8F9;' : ''}`}></div>
+              <div class="ds-color__info">
+                <span class="ds-color__name">{c.name}</span>
+                <span class="ds-color__hex">{c.hex}</span>
+                <span class="ds-color__classes">
+                  {c.tw.split(' / ').map(cls => (
+                    <span class="ds-tag">{cls}</span>
+                  ))}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #typo — Typographie
+           ──────────────────────────────────────── -->
+      <section id="typo" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:text-aa" class="inline w-6 h-6 align-[-3px]" /> Typographie
+        </h2>
+        <p class="ds-section__desc">Echelle typographique fluide (Major Third 1.25) avec <span class="ds-code">clamp()</span>.</p>
+
+        <p class="ds-sub">Titres</p>
+        {headings.map(h => (
+          <div class="ds-type-row">
+            <div class="ds-type-label">
+              <p class="ds-type-label__name">{h.label}</p>
+              <p class="ds-type-label__meta">LH {h.lh}</p>
+            </div>
+            <div class="ds-type-specimen" style={`font-size:${h.value};font-weight:700;`}>
+              Le vif renard brun
+            </div>
+          </div>
+        ))}
+
+        <p class="ds-sub">Textes</p>
+        {textSizes.map(t => (
+          <div class="ds-type-row">
+            <div class="ds-type-label">
+              <p class="ds-type-label__name">{t.label}</p>
+              <p class="ds-type-label__meta">LH {t.lh}</p>
+            </div>
+            <div class="ds-type-specimen" style={`font-size:${t.value};font-weight:400;`}>
+              Le vif renard brun saute par-dessus le chien paresseux.
+            </div>
+          </div>
+        ))}
+
+        <p class="ds-sub">Classes Tailwind</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Classe</th>
+              <th>Taille</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {headings.map(h => (
+              <tr>
+                <td><span class="ds-code">{h.class}</span></td>
+                <td style="font-size:12px;font-family:monospace;color:#828282;">{h.value}</td>
+                <td>Titre {h.label}</td>
+              </tr>
+            ))}
+            {textSizes.map(t => (
+              <tr>
+                <td><span class="ds-code">{t.class}</span></td>
+                <td style="font-size:12px;font-family:monospace;color:#828282;">{t.value}</td>
+                <td>Texte courant ({t.label})</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #espacements — Espacements
+           ──────────────────────────────────────── -->
+      <section id="espacements" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:arrows-out-line-horizontal" class="inline w-6 h-6 align-[-3px]" /> Espacements
+        </h2>
+        <p class="ds-section__desc">Grille base 4px, valeurs fluides <span class="ds-code">clamp()</span> pour les grandes tailles.</p>
+
+        {spacings.map((s, i) => (
+          <div class="ds-space-row">
+            <span class="ds-space-label">{s.label}</span>
+            <div class="ds-space-bar" style={`width:${i < 5 ? s.value : `clamp(${24 + (i - 5) * 16}px, ${(i - 4) * 2}vi + ${16 + (i - 5) * 8}px, ${32 + (i - 5) * 24}px)`}`}></div>
+            <span class="ds-space-value">{s.value}</span>
+          </div>
+        ))}
+
+        <p class="ds-sub">Classes Tailwind</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Token</th>
+              <th>Valeur</th>
+              <th>Exemples</th>
+            </tr>
+          </thead>
+          <tbody>
+            {spacings.map(s => (
+              <tr>
+                <td><span class="ds-chip">{s.label}</span></td>
+                <td style="font-size:12px;font-family:monospace;color:#828282;">{s.value}</td>
+                <td style="font-size:12px;font-family:monospace;">{s.tw}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #grilles — Grilles
+           ──────────────────────────────────────── -->
+      <section id="grilles" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:grid-four" class="inline w-6 h-6 align-[-3px]" /> Grilles
+        </h2>
+        <p class="ds-section__desc">Système de grilles responsive via le composant <span class="ds-code">&lt;Grid&gt;</span> et les classes Tailwind.</p>
+
+        <!-- grid-cols-2 -->
+        <div class="ds-grid-demo">
+          <p class="ds-grid-demo__label">&lt;Grid cols="2"&gt; — grid-cols-1 md:grid-cols-2</p>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+            <div class="ds-grid-cell">1</div>
+            <div class="ds-grid-cell">2</div>
+          </div>
+        </div>
+
+        <!-- grid-cols-3 -->
+        <div class="ds-grid-demo">
+          <p class="ds-grid-demo__label">&lt;Grid cols="3"&gt; — grid-cols-1 md:grid-cols-2 lg:grid-cols-3</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div class="ds-grid-cell">1</div>
+            <div class="ds-grid-cell">2</div>
+            <div class="ds-grid-cell">3</div>
+          </div>
+        </div>
+
+        <!-- grid-cols-4 -->
+        <div class="ds-grid-demo">
+          <p class="ds-grid-demo__label">&lt;Grid cols="4"&gt; — grid-cols-1 md:grid-cols-2 lg:grid-cols-4</p>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+            <div class="ds-grid-cell">1</div>
+            <div class="ds-grid-cell">2</div>
+            <div class="ds-grid-cell">3</div>
+            <div class="ds-grid-cell">4</div>
+          </div>
+        </div>
+
+        <!-- 2fr 1fr -->
+        <div class="ds-grid-demo">
+          <p class="ds-grid-demo__label">&lt;Grid cols="2-1"&gt; — md:grid-cols-[2fr_1fr]</p>
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px;">
+            <div class="ds-grid-cell">2fr</div>
+            <div class="ds-grid-cell">1fr</div>
+          </div>
+        </div>
+
+        <!-- 1fr 2fr -->
+        <div class="ds-grid-demo">
+          <p class="ds-grid-demo__label">&lt;Grid cols="1-2"&gt; — md:grid-cols-[1fr_2fr]</p>
+          <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;">
+            <div class="ds-grid-cell">1fr</div>
+            <div class="ds-grid-cell">2fr</div>
+          </div>
+        </div>
+
+        <p class="ds-sub">Composant Grid</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Prop <span class="ds-code">cols</span></th>
+              <th>Classes Tailwind générées</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ds-chip">1</span></td><td><span class="ds-code">grid grid-cols-1</span></td></tr>
+            <tr><td><span class="ds-chip">2</span></td><td><span class="ds-code">grid grid-cols-1 md:grid-cols-2</span></td></tr>
+            <tr><td><span class="ds-chip">3</span></td><td><span class="ds-code">grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3</span></td></tr>
+            <tr><td><span class="ds-chip">4</span></td><td><span class="ds-code">grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4</span></td></tr>
+            <tr><td><span class="ds-chip">2-1</span></td><td><span class="ds-code">grid grid-cols-1 md:grid-cols-[2fr_1fr]</span></td></tr>
+            <tr><td><span class="ds-chip">1-2</span></td><td><span class="ds-code">grid grid-cols-1 md:grid-cols-[1fr_2fr]</span></td></tr>
+            <tr><td><span class="ds-chip">1-3</span></td><td><span class="ds-code">grid grid-cols-1 md:grid-cols-[1fr_3fr]</span></td></tr>
+            <tr><td><span class="ds-chip">3-1</span></td><td><span class="ds-code">grid grid-cols-1 md:grid-cols-[3fr_1fr]</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #boutons — Boutons
+           ──────────────────────────────────────── -->
+      <section id="boutons" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:cursor-click" class="inline w-6 h-6 align-[-3px]" /> Boutons
+        </h2>
+        <p class="ds-section__desc">Composant <span class="ds-code">&lt;Button&gt;</span> avec 5 variantes.</p>
+
+        <p class="ds-sub">Primary</p>
+        <div class="ds-btn-showcase">
+          <Button variant="primary">Primary</Button>
+          <Button variant="primary" icon="arrow-right">Avec icône</Button>
+          <span class="ds-code">variant="primary"</span>
+        </div>
+
+        <p class="ds-sub">Secondary</p>
+        <div class="ds-btn-showcase">
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="secondary" icon="heart">Avec icône</Button>
+          <span class="ds-code">variant="secondary"</span>
+        </div>
+
+        <p class="ds-sub">Outline</p>
+        <div class="ds-btn-showcase">
+          <Button variant="outline">Outline</Button>
+          <Button variant="outline" icon="envelope-simple">Avec icône</Button>
+          <span class="ds-code">variant="outline"</span>
+        </div>
+
+        <p class="ds-sub">Dark</p>
+        <div class="ds-btn-showcase">
+          <Button variant="dark">Dark</Button>
+          <Button variant="dark" icon="gear">Avec icône</Button>
+          <span class="ds-code">variant="dark"</span>
+        </div>
+
+        <p class="ds-sub">Outline White</p>
+        <div class="ds-dark-panel">
+          <div class="ds-btn-showcase">
+            <Button variant="outline-white">Outline White</Button>
+            <Button variant="outline-white" icon="star">Avec icône</Button>
+            <span class="ds-code" style="color:white;background:rgba(255,255,255,0.15);">variant="outline-white"</span>
+          </div>
+        </div>
+
+        <p class="ds-sub">Propriétés</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Prop</th>
+              <th>Type</th>
+              <th>Défaut</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ds-code">variant</span></td><td>string</td><td><span class="ds-chip">primary</span></td><td>primary, secondary, outline, outline-white, dark</td></tr>
+            <tr><td><span class="ds-code">href</span></td><td>string</td><td>—</td><td>Rend un <span class="ds-code">&lt;a&gt;</span> au lieu d'un <span class="ds-code">&lt;button&gt;</span></td></tr>
+            <tr><td><span class="ds-code">icon</span></td><td>string</td><td>—</td><td>Nom Phosphor sans préfixe (ex: "arrow-right")</td></tr>
+            <tr><td><span class="ds-code">full</span></td><td>boolean</td><td>false</td><td>Bouton pleine largeur</td></tr>
+            <tr><td><span class="ds-code">type</span></td><td>string</td><td>button</td><td>Type HTML (button, submit)</td></tr>
+            <tr><td><span class="ds-code">disabled</span></td><td>boolean</td><td>false</td><td>État désactivé</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #cartes — Cartes
+           ──────────────────────────────────────── -->
+      <section id="cartes" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:cards" class="inline w-6 h-6 align-[-3px]" /> Cartes
+        </h2>
+        <p class="ds-section__desc">Composant <span class="ds-code">&lt;Card&gt;</span> — fond blanc, ombre, border-radius.</p>
+
+        <div class="ds-card-demo">
+          <Card title="Carte simple">
+            <p>Contenu de la carte avec du texte descriptif.</p>
+          </Card>
+
+          <Card title="Avec icône" icon="ph-lightning">
+            <p>Carte avec une icône Phosphor dans le titre.</p>
+          </Card>
+
+          <Card>
+            <p style="font-size:14px;color:#828282;">Carte sans titre, uniquement du contenu libre via le slot par défaut.</p>
+          </Card>
+        </div>
+
+        <p class="ds-sub">Propriétés</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Prop</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="ds-code">title</span></td><td>string</td><td>Titre affiché en h3</td></tr>
+            <tr><td><span class="ds-code">icon</span></td><td>string</td><td>Icône Phosphor (format ph-xxx ou ph:xxx)</td></tr>
+            <tr><td><span class="ds-code">class</span></td><td>string</td><td>Classes CSS additionnelles</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #formulaires — Formulaires
+           ──────────────────────────────────────── -->
+      <section id="formulaires" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:textbox" class="inline w-6 h-6 align-[-3px]" /> Formulaires
+        </h2>
+        <p class="ds-section__desc">Éléments de formulaire stylés avec Tailwind.</p>
+
+        <div class="ds-form-grid">
+          <!-- Input text -->
+          <div>
+            <label class="block mb-2xs text-text-s font-medium text-black" for="ds-input">
+              <Icon name="ph:user" class="inline w-4 h-4 mr-0.5 align-[-2px]" aria-hidden="true" /> Input texte
+            </label>
+            <input
+              class="w-full py-xs px-s border border-border rounded text-text-m transition-colors duration-300 focus:outline-none focus:border-primary bg-white"
+              type="text"
+              id="ds-input"
+              placeholder="Votre nom"
+            />
+          </div>
+
+          <!-- Input email -->
+          <div>
+            <label class="block mb-2xs text-text-s font-medium text-black" for="ds-email">
+              <Icon name="ph:at" class="inline w-4 h-4 mr-0.5 align-[-2px]" aria-hidden="true" /> Input email
+            </label>
+            <input
+              class="w-full py-xs px-s border border-border rounded text-text-m transition-colors duration-300 focus:outline-none focus:border-primary bg-white"
+              type="email"
+              id="ds-email"
+              placeholder="email@example.com"
+            />
+          </div>
+
+          <!-- Select -->
+          <div>
+            <label class="block mb-2xs text-text-s font-medium text-black" for="ds-select">
+              <Icon name="ph:caret-down" class="inline w-4 h-4 mr-0.5 align-[-2px]" aria-hidden="true" /> Select
+            </label>
+            <select
+              class="w-full py-xs px-s border border-border rounded text-text-m transition-colors duration-300 focus:outline-none focus:border-primary bg-white appearance-none"
+              id="ds-select"
+            >
+              <option value="">Choisir une option</option>
+              <option value="1">Option 1</option>
+              <option value="2">Option 2</option>
+              <option value="3">Option 3</option>
+            </select>
+          </div>
+
+          <!-- Textarea -->
+          <div>
+            <label class="block mb-2xs text-text-s font-medium text-black" for="ds-textarea">
+              <Icon name="ph:chat-text" class="inline w-4 h-4 mr-0.5 align-[-2px]" aria-hidden="true" /> Textarea
+            </label>
+            <textarea
+              class="w-full py-xs px-s border border-border rounded text-text-m transition-colors duration-300 focus:outline-none focus:border-primary bg-white resize-y"
+              id="ds-textarea"
+              rows="3"
+              placeholder="Votre message..."
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Checkboxes & radios -->
+        <div style="display:flex;gap:48px;flex-wrap:wrap;margin-top:24px;">
+          <div>
+            <p class="ds-sub" style="margin-top:0;">Checkbox</p>
+            <label class="flex items-center gap-2xs mb-2xs text-text-s cursor-pointer">
+              <input type="checkbox" class="w-4 h-4 accent-primary rounded" checked /> Option cochée
+            </label>
+            <label class="flex items-center gap-2xs mb-2xs text-text-s cursor-pointer">
+              <input type="checkbox" class="w-4 h-4 accent-primary rounded" /> Option non cochée
+            </label>
+          </div>
+          <div>
+            <p class="ds-sub" style="margin-top:0;">Radio</p>
+            <label class="flex items-center gap-2xs mb-2xs text-text-s cursor-pointer">
+              <input type="radio" name="ds-radio" class="w-4 h-4 accent-primary" checked /> Choix A
+            </label>
+            <label class="flex items-center gap-2xs mb-2xs text-text-s cursor-pointer">
+              <input type="radio" name="ds-radio" class="w-4 h-4 accent-primary" /> Choix B
+            </label>
+          </div>
+        </div>
+
+        <p class="ds-sub">Classes des champs</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Élément</th>
+              <th>Classes Tailwind</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Label</td>
+              <td><span class="ds-code">block mb-2xs text-text-s font-medium text-black</span></td>
+            </tr>
+            <tr>
+              <td>Input / Select / Textarea</td>
+              <td><span class="ds-code">w-full py-xs px-s border border-border rounded text-text-m transition-colors duration-300 focus:outline-none focus:border-primary</span></td>
+            </tr>
+            <tr>
+              <td>Checkbox / Radio</td>
+              <td><span class="ds-code">w-4 h-4 accent-primary</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #icones — Icônes
+           ──────────────────────────────────────── -->
+      <section id="icones" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:smiley" class="inline w-6 h-6 align-[-3px]" /> Icônes
+        </h2>
+        <p class="ds-section__desc">
+          Icônes <a href="https://phosphoricons.com" target="_blank" rel="noopener" style="color:#235265;text-decoration:underline;">Phosphor Icons</a> via <span class="ds-code">astro-icon</span>.
+          Usage : <span class="ds-code">&lt;Icon name="ph:icon-name" class="w-5 h-5" /&gt;</span>
+        </p>
+
+        <div class="ds-icon-grid">
+          {icons.map(name => (
+            <div class="ds-icon-item">
+              <Icon name={name} class="w-6 h-6 text-primary" />
+              <span class="ds-icon-item__name">{name.replace('ph:', '')}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
+      <!-- ────────────────────────────────────────
+           #utilitaires — Utilitaires
+           ──────────────────────────────────────── -->
+      <section id="utilitaires" class="ds-section ds-reveal">
+        <h2 class="ds-section__title">
+          <Icon name="ph:wrench" class="inline w-6 h-6 align-[-3px]" /> Utilitaires
+        </h2>
+        <p class="ds-section__desc">Référence des classes Tailwind disponibles dans ce projet.</p>
+
+        <p class="ds-sub">Couleurs</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Classes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Background</td>
+              <td>
+                <span class="ds-code">bg-primary</span>
+                <span class="ds-code">bg-secondary</span>
+                <span class="ds-code">bg-third</span>
+                <span class="ds-code">bg-accent</span>
+                <span class="ds-code">bg-bg</span>
+                <span class="ds-code">bg-border</span>
+                <span class="ds-code">bg-shadow</span>
+                <span class="ds-code">bg-white</span>
+                <span class="ds-code">bg-black</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Texte</td>
+              <td>
+                <span class="ds-code">text-primary</span>
+                <span class="ds-code">text-secondary</span>
+                <span class="ds-code">text-third</span>
+                <span class="ds-code">text-accent</span>
+                <span class="ds-code">text-text</span>
+                <span class="ds-code">text-white</span>
+                <span class="ds-code">text-black</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="ds-sub">Typographie</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Classes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Titres</td>
+              <td>
+                <span class="ds-code">text-h1</span>
+                <span class="ds-code">text-h2</span>
+                <span class="ds-code">text-h3</span>
+                <span class="ds-code">text-h4</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Textes</td>
+              <td>
+                <span class="ds-code">text-text-xl</span>
+                <span class="ds-code">text-text-l</span>
+                <span class="ds-code">text-text-m</span>
+                <span class="ds-code">text-text-s</span>
+                <span class="ds-code">text-text-xs</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Polices</td>
+              <td>
+                <span class="ds-code">font-primary</span>
+                <span class="ds-code">font-secondary</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Poids</td>
+              <td>
+                <span class="ds-code">font-medium</span>
+                <span class="ds-code">font-semibold</span>
+                <span class="ds-code">font-bold</span>
+                <span class="ds-code">font-extrabold</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="ds-sub">Espacements</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Classes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gap</td>
+              <td>
+                <span class="ds-code">gap-3xs</span>
+                <span class="ds-code">gap-2xs</span>
+                <span class="ds-code">gap-xs</span>
+                <span class="ds-code">gap-s</span>
+                <span class="ds-code">gap-m</span>
+                <span class="ds-code">gap-l</span>
+                <span class="ds-code">gap-xl</span>
+                <span class="ds-code">gap-2xl</span>
+                <span class="ds-code">gap-3xl</span>
+                <span class="ds-code">gap-4xl</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Margin bottom</td>
+              <td>
+                <span class="ds-code">mb-3xs</span>
+                <span class="ds-code">mb-2xs</span>
+                <span class="ds-code">mb-xs</span>
+                <span class="ds-code">mb-s</span>
+                <span class="ds-code">mb-m</span>
+                <span class="ds-code">mb-l</span>
+                <span class="ds-code">mb-xl</span>
+                <span class="ds-code">mb-2xl</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Padding</td>
+              <td>
+                <span class="ds-code">p-3xs</span>
+                <span class="ds-code">p-2xs</span>
+                <span class="ds-code">p-xs</span>
+                <span class="ds-code">p-s</span>
+                <span class="ds-code">p-m</span>
+                <span class="ds-code">p-l</span>
+                <span class="ds-code">p-xl</span>
+                <span class="ds-code">p-2xl</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="ds-sub">Layout</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Classes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Container</td>
+              <td>
+                <span class="ds-code">max-w-container</span>
+                <span class="ds-code">mx-auto</span>
+                <span class="ds-code">px-m</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Grid</td>
+              <td>
+                <span class="ds-code">grid</span>
+                <span class="ds-code">grid-cols-1</span>
+                <span class="ds-code">md:grid-cols-2</span>
+                <span class="ds-code">lg:grid-cols-3</span>
+                <span class="ds-code">lg:grid-cols-4</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Flexbox</td>
+              <td>
+                <span class="ds-code">flex</span>
+                <span class="ds-code">flex-col</span>
+                <span class="ds-code">items-center</span>
+                <span class="ds-code">justify-center</span>
+                <span class="ds-code">flex-wrap</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Largeur</td>
+              <td>
+                <span class="ds-code">w-full</span>
+                <span class="ds-code">max-w-container</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="ds-sub">Display &amp; responsive</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Catégorie</th>
+              <th>Classes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Visibilité</td>
+              <td>
+                <span class="ds-code">hidden</span>
+                <span class="ds-code">block</span>
+                <span class="ds-code">inline</span>
+                <span class="ds-code">inline-flex</span>
+                <span class="ds-code">flex</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Responsive</td>
+              <td>
+                <span class="ds-code">md:block</span>
+                <span class="ds-code">md:hidden</span>
+                <span class="ds-code">lg:block</span>
+                <span class="ds-code">lg:hidden</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Breakpoints</td>
+              <td>
+                <span class="ds-chip">md</span> 768px
+                <span class="ds-chip">lg</span> 1024px
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="ds-sub">Border Radius</p>
+        <div class="ds-radius-grid">
+          <div class="ds-radius-item">
+            <div class="ds-radius-box" style="border-radius:12px;"></div>
+            <span class="ds-code">rounded</span>
+            <span style="font-size:11px;color:#828282;">12px</span>
+          </div>
+          <div class="ds-radius-item">
+            <div class="ds-radius-box" style="border-radius:16px;"></div>
+            <span class="ds-code">rounded-m</span>
+            <span style="font-size:11px;color:#828282;">16px</span>
+          </div>
+          <div class="ds-radius-item">
+            <div class="ds-radius-box" style="border-radius:9999px;"></div>
+            <span class="ds-code">rounded-full</span>
+            <span style="font-size:11px;color:#828282;">pill</span>
+          </div>
+        </div>
+
+        <p class="ds-sub">Box Shadow</p>
+        <table class="ds-table">
+          <thead>
+            <tr>
+              <th>Classe</th>
+              <th>Valeur</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="ds-code">shadow-card</span></td>
+              <td style="font-size:12px;font-family:monospace;color:#828282;">0 4px 12px #EEF1F3</td>
+              <td>Cartes, panneaux</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+    </div><!-- /.ds-main -->
+  </div><!-- /.ds-layout -->
+</div><!-- /.ds -->
+
+<script is:inline>
+(function(){
+  /* ── Reveal on scroll ── */
+  var reveals = document.querySelectorAll('.ds-reveal');
+  var revealObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+    });
+  },{ threshold: 0.08 });
+  reveals.forEach(function(el){ revealObs.observe(el); });
+
+  /* ── Scroll spy ── */
+  var sections = document.querySelectorAll('.ds-section[id]');
+  var links = document.querySelectorAll('#ds-nav .ds-sidebar__link');
+  var spyObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        var active = document.querySelector('#ds-nav a[href="#'+e.target.id+'"]');
+        if(active) active.classList.add('active');
+      }
+    });
+  },{ rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(function(s){ spyObs.observe(s); });
+
+  /* ── Mobile drawer ── */
+  var trigger = document.getElementById('ds-sidebar-trigger');
+  var sidebar = document.getElementById('ds-sidebar');
+  var overlay = document.getElementById('ds-sidebar-overlay');
+  var close = document.getElementById('ds-sidebar-close');
+
+  function openDrawer() {
+    sidebar.classList.add('is-open');
+    overlay.classList.add('is-open');
+    trigger.setAttribute('aria-expanded', 'true');
+  }
+  function closeDrawer() {
+    sidebar.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+  if(trigger) trigger.addEventListener('click', openDrawer);
+  if(close) close.addEventListener('click', closeDrawer);
+  if(overlay) overlay.addEventListener('click', closeDrawer);
+  links.forEach(function(link){ link.addEventListener('click', closeDrawer); });
+})();
+</script>
+
+</Bare>

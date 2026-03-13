@@ -1,0 +1,33 @@
+---
+import Section from '../Section.astro';
+import Grid from '../Grid.astro';
+import Card from '../Card.astro';
+
+interface Props {
+  title?: string;
+  cols?: '2' | '3' | '4';
+  items: Array<{ icon?: string; title: string; text: string }>;
+  background?: 'light' | 'primary' | 'dark';
+}
+
+const { title, cols = '3', items, background } = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  light: 'bg-bg',
+  primary: 'bg-primary text-white',
+  dark: 'bg-black text-white',
+};
+
+const sectionClass = background ? bgClasses[background] : '';
+---
+
+<Section class={sectionClass}>
+  {title && <h2 class="mb-m">{title}</h2>}
+  <Grid cols={cols} gap="l">
+    {items.map((item) => (
+      <Card title={item.title} icon={item.icon}>
+        <p>{item.text}</p>
+      </Card>
+    ))}
+  </Grid>
+</Section>

@@ -1,0 +1,32 @@
+name: CI — HTML validation
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+      - run: npm run build
+
+      # HTML link & image validation
+      - name: Install htmltest
+        run: |
+          curl -sL -o htmltest.tar.gz https://github.com/wjdp/htmltest/releases/download/v0.17.0/htmltest_0.17.0_linux_amd64.tar.gz
+          echo "775c597ee74899d6002cd2d93076f897f4ba68686bceabe2e5d72e84c57bc0fb  htmltest.tar.gz" | sha256sum -c -
+          tar xzf htmltest.tar.gz
+          sudo mv htmltest /usr/local/bin/
+          rm htmltest.tar.gz
+      - name: Run htmltest
+        run: htmltest

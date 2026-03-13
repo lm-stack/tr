@@ -1,0 +1,17 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  size?: 'default' | 'compact';
+}
+
+const { title, subtitle, size = 'default' } = Astro.props;
+const paddingClass = size === 'compact' ? 'py-2xl' : 'py-4xl';
+---
+
+<section class={`bg-primary ${paddingClass}`}>
+  <div class="max-w-container mx-auto px-m text-center">
+    <h1 class="text-white">{title}</h1>
+    {subtitle && <p class="text-white text-text-l mt-2xs">{subtitle}</p>}
+  </div>
+</section>

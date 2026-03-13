@@ -1,0 +1,54 @@
+---
+import Section from './Section.astro';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title?: string;
+  items: Array<{ question: string; answer: string }>;
+  background?: 'light' | 'primary' | 'dark';
+}
+
+const { title, items, background } = Astro.props;
+
+const bgClasses: Record<string, string> = {
+  light: 'bg-bg',
+  primary: 'bg-primary text-white',
+  dark: 'bg-black text-white',
+};
+
+const sectionClass = background ? bgClasses[background] : '';
+
+// Generate FAQPage JSON-LD
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+};
+---
+
+<Section class={sectionClass}>
+  <div class="max-w-[800px] mx-auto">
+    {title && <h2 class="text-center mb-xl">{title}</h2>}
+    {items.map((item) => (
+      <details class="bg-white rounded p-m shadow-card mb-s">
+        <summary class="font-bold cursor-pointer">
+          <Icon name="ph:caret-right" class="inline w-4 h-4" aria-hidden="true" /> {item.question}
+        </summary>
+        <p class="text-text mt-s">{item.answer}</p>
+      </details>
+    ))}
+  </div>
+</Section>
+
+<script
+  type="application/ld+json"
+  data-pagefind-ignore
+  set:html={JSON.stringify(faqSchema)}
+/>
