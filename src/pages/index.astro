@@ -1,30 +1,362 @@
 ---
-import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import Section from '../components/Section.astro';
-import Card from '../components/Card.astro';
-import Grid from '../components/Grid.astro';
-import { getEntry } from 'astro:content';
-import type { HomePageData } from '../lib/data';
+import CvLayout from '../layouts/CvLayout.astro';
+import FormField from '../components/FormField.astro';
+import Button from '../components/Button.astro';
+import { Icon } from 'astro-icon/components';
+import { getSiteData } from '../lib/data';
 
-const home = await getEntry('pages', 'home');
-const data = home!.data as HomePageData;
+const site = await getSiteData();
 ---
 
-<Base
-  seo={data.seo}
+<CvLayout
+  seo={{
+    title: 'Curriculum Vitae',
+    description: 'Hi there, nice to meet you! I am Thomas Rouaud, a professional with more than 15 years of experience interested in opportunities in marketing, digital and project management.'
+  }}
   isHome
 >
-  <Hero title={data.hero.title} subtitle={data.hero.subtitle} />
+  <!-- About Me -->
+  <div class="cv-box">
+    <div class="cv-about-intro">
+      <h2 class="cv-about-title">About me</h2>
+      <p class="cv-about-subtitle">Curriculum Vitae</p>
+      <p class="cv-about-text">Hi there, nice to meet you!<br><br>I am Thomas Rouaud, a professional with more than 15 years of experience interested in opportunities in marketing, digital and project management.</p>
+    </div>
 
-  <Section>
-    <h2 class="mb-m">{data.content.title}</h2>
-    <Grid cols="3" gap="l">
-      {data.content.cards.map((card) => (
-        <Card title={card.title} icon={card.icon}>
-          <p>{card.text}</p>
-        </Card>
-      ))}
-    </Grid>
-  </Section>
-</Base>
+    <div class="cv-about-columns">
+      <div class="cv-about-col">
+        <h3>Thomas Rouaud</h3>
+        <p class="cv-info-line"><strong>Full Name:</strong> Thomas Rouaud</p>
+        <p class="cv-info-line"><strong>Birthday:</strong> December 25, 1989</p>
+        <p class="cv-info-line"><strong>E-mail:</strong> <a href="#contact" class="cv-info-link">Contact form</a></p>
+        <p class="cv-info-line"><strong>Nationality:</strong> Swiss</p>
+      </div>
+      <div class="cv-about-col">
+        <h3>Specialization</h3>
+        <div class="cv-progress-bar">
+          <div class="cv-progress-bar__item">
+            <span class="cv-progress-bar__label">Marketing & Sales</span>
+            <div class="cv-progress-bar__track"><span class="cv-progress-bar__fill" data-width="95%"></span></div>
+          </div>
+          <div class="cv-progress-bar__item">
+            <span class="cv-progress-bar__label">Digital transformation</span>
+            <div class="cv-progress-bar__track"><span class="cv-progress-bar__fill" data-width="90%"></span></div>
+          </div>
+          <div class="cv-progress-bar__item">
+            <span class="cv-progress-bar__label">Project Management</span>
+            <div class="cv-progress-bar__track"><span class="cv-progress-bar__fill" data-width="85%"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Relevant Experiences -->
+  <div class="cv-box">
+    <h2 class="cv-section-title">Relevant Experiences</h2>
+
+    <div class="cv-timeline">
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2020 - Now</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">Executive Education HEC Lausanne</h3>
+          <h4 class="cv-timeline__role">Head of Marketing & Sales</h4>
+          <div class="cv-timeline__text">
+            <p>Education institution offering training programs for professionals and organizations. My main tasks are to:</p>
+            <ul>
+              <li>Oversee the development and execution of the marketing, product and go-to market strategy</li>
+              <li>Lead the marketing extended team including digital, sales and creatives professionals (5 persons)</li>
+              <li>Increase revenues in a traditional highly competitive market (average annual growth of 30%)</li>
+              <li>Supervise the lead generation automation strategy</li>
+              <li>Ensure the branding of the institution is strong and consistent across all channels</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2016 - 2019</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">Executive Education HEC Lausanne</h3>
+          <h4 class="cv-timeline__role">Digital Marketing Project Manager</h4>
+          <div class="cv-timeline__text">
+            <p>In charge of managing digital campaigns and developing the digital environment of the institution:</p>
+            <ul>
+              <li>Plan and execute digital campaigns on social medias, adwords and display (up to 120k/year media budget)</li>
+              <li>Drive and execute digital transformation to improve organizational efficiency</li>
+              <li>Create and launch three new websites (&gt;30 successful website creations in my career)</li>
+              <li>Design marketing automation flows to streamline processes (reach 600k/year of automated tasks)</li>
+              <li>Manage organization data and produce visual dashboards and reports to track performance</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2015 - 2016</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">Share A Dream</h3>
+          <h4 class="cv-timeline__role">Digital Marketing Manager</h4>
+          <div class="cv-timeline__text">
+            <p>Share A Dream was a start-up (now Alaya) that aimed to connect NGOs with businesses. My role was to:</p>
+            <ul>
+              <li>Create the digital environment from scratch (web, networks, etc.)</li>
+              <li>Plan and execute organic campaigns (emailings, social medias, etc.)</li>
+              <li>Create and publish engaging content (infographics, videos, etc.)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2009 - 2012</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">Weasy Life Agency</h3>
+          <h4 class="cv-timeline__role">Founder and director</h4>
+          <div class="cv-timeline__text">
+            <p>Weasy Life Agency was an agency offering digital marketing services (web, email, etc.). My role was to:</p>
+            <ul>
+              <li>Design and launch websites (UI/UX design)</li>
+              <li>Identify customer needs and deliver appropriate solutions</li>
+              <li>Oversee the follow-up of our customers and projects</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2006 - 2009</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">PwC</h3>
+          <h4 class="cv-timeline__role">Apprentice</h4>
+          <div class="cv-timeline__text">
+            <p>PwC is a multinational company offering audit and advisory services. As an apprentice, my main tasks were to:</p>
+            <ul>
+              <li>Assist managers (invoices, bookings, emails, etc.)</li>
+              <li>Support CRM adoption by leading training and providing support</li>
+              <li>Organize marketing events (conferences, workshops, etc.)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="cv-box">
+    <h2 class="cv-section-title">Education</h2>
+
+    <div class="cv-timeline">
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2019 - 2020</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">University of Berkeley</h3>
+          <h4 class="cv-timeline__role">Micromasters in Marketing Analytics</h4>
+        </div>
+      </div>
+
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2013 - 2018</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">HEC Lausanne</h3>
+          <h4 class="cv-timeline__role">Master of Science in Management (MScM)<br>Bachelor in Management (BScM)</h4>
+        </div>
+      </div>
+
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2012 - 2013</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">Gymnase de Provence</h3>
+          <h4 class="cv-timeline__role">Passerelle DUBS</h4>
+        </div>
+      </div>
+
+      <div class="cv-timeline__item">
+        <div class="cv-timeline__marker">
+          <span class="cv-timeline__date">2006 - 2009</span>
+          <span class="cv-timeline__dot"></span>
+        </div>
+        <div class="cv-timeline__content">
+          <h3 class="cv-timeline__company">EPC Lausanne</h3>
+          <h4 class="cv-timeline__role">Maturité Professionnelle Commerciale (MPC)<br>Certificat Fédéral de Capacité (CFC)</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal (Projects) -->
+  <div class="cv-box">
+    <h2 class="cv-section-title">Personal</h2>
+
+    <!-- Isotope Filters -->
+    <nav class="cv-filters" aria-label="Project filters">
+      <button class="active" data-filter="*">All</button>
+      <button data-filter="conferences">Conferences</button>
+      <button data-filter="humanitarian-project">Humanitarian project</button>
+    </nav>
+
+    <div class="cv-projects-grid">
+      <div class="cv-project-item conferences">
+        <a href="/hec-et-apres/" class="cv-project-card" aria-label="Read more about HEC et après?">
+          <img src="/images/hec-et-apres.jpg" alt="Thomas Rouaud, Conférence HEC et après?" width="1024" height="635" loading="lazy" />
+          <div class="cv-project-card__overlay">
+            <div class="cv-project-card__inner">
+              <h3>HEC et après?</h3>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="cv-project-item conferences">
+        <a href="/how-to-have-an-impact/" class="cv-project-card" aria-label="Read more about How to have an impact?">
+          <img src="/images/how-to-have-an-impact.jpg" alt="Thomas Rouaud, Conférence Africa Summit, Saint Gallen" width="1024" height="635" loading="lazy" />
+          <div class="cv-project-card__overlay">
+            <div class="cv-project-card__inner">
+              <h3>How to have an impact?</h3>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="cv-project-item humanitarian-project">
+        <a href="/clinton-foundation/" class="cv-project-card" aria-label="Read more about Clinton Foundation">
+          <img src="/images/clinton-foundation.jpg" alt="Thomas Rouaud, Clinton Foundation" width="1024" height="635" loading="lazy" />
+          <div class="cv-project-card__overlay">
+            <div class="cv-project-card__inner">
+              <h3>Clinton Foundation</h3>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="cv-project-item humanitarian-project">
+        <a href="/volunteer-in-kenya/" class="cv-project-card" aria-label="Read more about Volunteer in Kenya">
+          <img src="/images/volunteer-in-kenya.jpg" alt="Thomas Rouaud, Volunteer in Kenya" width="1024" height="635" loading="lazy" />
+          <div class="cv-project-card__overlay">
+            <div class="cv-project-card__inner">
+              <h3>Volunteer in Kenya</h3>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional -->
+  <div class="cv-box">
+    <h2 class="cv-section-title">Additional</h2>
+
+    <h3 class="cv-additional-subtitle">Languages</h3>
+    <div class="cv-languages-grid">
+      <div class="cv-progress-bar__item">
+        <span class="cv-progress-bar__label">French</span>
+        <div class="cv-progress-bar__track"><span class="cv-progress-bar__fill" data-width="100%"></span></div>
+      </div>
+      <div class="cv-progress-bar__item">
+        <span class="cv-progress-bar__label">English</span>
+        <div class="cv-progress-bar__track"><span class="cv-progress-bar__fill" data-width="85%"></span></div>
+      </div>
+    </div>
+
+    <h3 class="cv-additional-subtitle">Interests</h3>
+    <div class="cv-interests">
+      <div class="cv-interest">
+        <Icon name="ph:paper-plane-tilt" class="cv-interest__icon" aria-hidden="true" />
+        <h4 class="cv-interest__label">Travelling</h4>
+      </div>
+      <div class="cv-interest">
+        <Icon name="ph:mountains" class="cv-interest__icon" aria-hidden="true" />
+        <h4 class="cv-interest__label">Climbing</h4>
+      </div>
+      <div class="cv-interest">
+        <Icon name="ph:film-strip" class="cv-interest__icon" aria-hidden="true" />
+        <h4 class="cv-interest__label">Cinema</h4>
+      </div>
+      <div class="cv-interest">
+        <Icon name="ph:desktop" class="cv-interest__icon" aria-hidden="true" />
+        <h4 class="cv-interest__label">Digital</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div id="contact" class="cv-box">
+    <h2 class="cv-section-title">Contact</h2>
+
+    <form data-webhook={site.webhookUrl} data-webhook-token={site.webhookToken || ''} novalidate>
+      <!-- Honeypot anti-spam -->
+      <div class="absolute opacity-0 -z-10 h-0 overflow-hidden" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="cv-form-row">
+        <div class="cv-form-group">
+          <label for="firstname">First name</label>
+          <input id="firstname" name="firstname" type="text" placeholder="Yves" required spellcheck="false">
+          <span id="firstname-error" class="form-error" role="alert"></span>
+        </div>
+        <div class="cv-form-group">
+          <label for="lastname">Last name</label>
+          <input id="lastname" name="lastname" type="text" placeholder="Rochat" required spellcheck="false">
+          <span id="lastname-error" class="form-error" role="alert"></span>
+        </div>
+      </div>
+
+      <div class="cv-form-row">
+        <div class="cv-form-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="yves.rochat@gmail.com" maxlength="320" required>
+          <span id="email-error" class="form-error" role="alert"></span>
+        </div>
+        <div class="cv-form-group">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+41791501133" required>
+          <span id="phone-error" class="form-error" role="alert"></span>
+        </div>
+      </div>
+
+      <div class="cv-form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Write your message here" required spellcheck="false"></textarea>
+        <span id="message-error" class="form-error" role="alert"></span>
+      </div>
+
+      <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey} data-callback="bricksTurnstileCallback" data-error-callback="bricksTurnstileErrorCallback"></div>
+
+      <div class="cv-form-submit">
+        <button type="submit" class="cv-btn-submit">
+          <span class="text">Send your message</span>
+        </button>
+      </div>
+
+      <div id="form-feedback" class="form-feedback" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</CvLayout>

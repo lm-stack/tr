@@ -1,19 +1,18 @@
 {
-  "url": "https://example.com",
-  "name": "Nom du site",
-  "lang": "fr",
-  "description": "Description de votre site en une ou deux phrases. Personnalisez ce texte pour décrire votre activité et attirer les visiteurs (150-160 caractères).",
+  "url": "https://thomasrouaud.com",
+  "name": "Thomas Rouaud",
+  "lang": "en",
+  "description": "Thomas Rouaud — Digital & growth marketing professional with 15+ years of experience in marketing, digital and project management.",
   "ogImage": "/og-image.jpg",
-  "logoText": "Blueprint",
-  "logoIcon": "ph-blueprint",
-  "copyright": "Blueprint",
-  "webhookUrl": "https://n8n.example.com/webhook/contact",
+  "logoText": "Thomas Rouaud",
+  "logoIcon": "ph-user",
+  "copyright": "Thomas Rouaud",
+  "webhookUrl": "",
   "webhookToken": "",
   "turnstileSiteKey": "0x0000000000000000000000",
-  "searchUrl": "/recherche/",
+  "fontsPreload": ["/fonts/quicksand-latin.woff2"],
   "nav": [
-    { "url": "/", "label": "Accueil", "icon": "ph-house" },
-    { "url": "/a-propos/", "label": "À propos", "icon": "ph-users" },
-    { "url": "/contact/", "label": "Contact", "icon": "ph-envelope-simple" }
+    { "url": "/", "label": "Home" },
+    { "url": "/contact/", "label": "Contact" }
   ]
 }

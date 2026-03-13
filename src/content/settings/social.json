@@ -1,3 +1,14 @@
 {
-  "social": []
+  "social": [
+    {
+      "label": "LinkedIn",
+      "url": "https://linkedin.com/in/thomasrouaud/",
+      "icon": "ph-linkedin-logo"
+    },
+    {
+      "label": "YouTube",
+      "url": "https://youtube.com/channel/UC2GsS6Hw14fs1SMAiEI-6RQ",
+      "icon": "ph-youtube-logo"
+    }
+  ]
 }

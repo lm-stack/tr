@@ -1,23 +1,14 @@
 seo:
-  title: "Accueil"
-  description: "Description de votre site en une ou deux phrases. Personnalisez ce texte pour décrire votre activité et attirer les visiteurs (150-160 caractères)."
+  title: "Digital & Growth Marketing"
+  description: "Thomas Rouaud — Professional with 15+ years of experience in marketing, digital and project management."
 
 hero:
-  title: "Site Blueprint"
-  subtitle: "Template prêt à personnaliser"
+  title: "Thomas Rouaud"
+  subtitle: "Digital & growth marketing"
 
 content:
-  title: "Bienvenue"
-  cards:
-    - icon: "ph-lightning"
-      title: "Section 1"
-      text: "Contenu à personnaliser."
-    - icon: "ph-gear"
-      title: "Section 2"
-      text: "Contenu à personnaliser."
-    - icon: "ph-chart-line-up"
-      title: "Section 3"
-      text: "Contenu à personnaliser."
+  title: ""
+  cards: []
 
 footer:
-  description: "Template de site web."
+  description: ""

@@ -1,0 +1,112 @@
+---
+import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
+import JsonLd from '../components/JsonLd.astro';
+import { getSiteData } from '../lib/data';
+import { Icon } from 'astro-icon/components';
+import { toIconName } from '../lib/data';
+
+interface Props {
+  seo: {
+    title: string;
+    description: string;
+    ogImage?: string;
+  };
+  breadcrumb?: string;
+  isHome?: boolean;
+  noindex?: boolean;
+}
+
+const site = await getSiteData();
+const { seo, breadcrumb, isHome = false, noindex = false } = Astro.props;
+const currentUrl = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang={site.lang}>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' data: https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' data:; font-src 'self'; img-src 'self' data:; connect-src 'self' https:; frame-src https://challenges.cloudflare.com;">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>{site.name} | {seo.title}</title>
+  <meta name="description" content={seo.description}>
+  {noindex && <meta name="robots" content="noindex, nofollow">}
+  <link rel="canonical" href={`${site.url}${currentUrl}`}>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={`${seo.title} | ${site.name}`}>
+  <meta property="og:description" content={seo.description}>
+  <meta property="og:image" content={`${site.url}${seo.ogImage || site.ogImage}`}>
+  <meta property="og:url" content={`${site.url}${currentUrl}`}>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content={site.name}>
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={`${seo.title} | ${site.name}`}>
+  <meta name="twitter:description" content={seo.description}>
+  <meta name="twitter:image" content={`${site.url}${seo.ogImage || site.ogImage}`}>
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Preload fonts -->
+  {site.fontsPreload && site.fontsPreload.map((font: string) => (
+    <link rel="preload" href={font} as="font" type="font/woff2" crossorigin>
+  ))}
+  <ViewTransitions />
+</head>
+<body class="font-primary antialiased">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:bg-primary focus:text-white focus:py-xs focus:px-s focus:rounded focus:text-text-s">
+    Skip to main content
+  </a>
+
+  <div class="cv-container">
+    <div class="cv-wrapper">
+      <!-- Sidebar card (photo + name + social only) -->
+      <aside class="cv-sidebar" role="complementary" aria-label="Personal information">
+        <div class="cv-sidebar__photo">
+          <img src="/images/thomas-rouaud.jpg" alt="Thomas Rouaud" width="300" height="300" loading="eager" />
+        </div>
+        <h1 class="cv-sidebar__name">Thomas Rouaud</h1>
+        <p class="cv-sidebar__title">Digital & growth marketing</p>
+        {site.social && site.social.length > 0 && (
+          <ul class="cv-sidebar__social">
+            {site.social.map((s) => (
+              <li>
+                <a href={s.url} target="_blank" rel="noopener" aria-label={s.label} class="cv-sidebar__social-link">
+                  <Icon name={toIconName(s.icon)} class="w-5 h-5" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </aside>
+
+      <!-- Main content -->
+      <main id="main-content" class="cv-main" data-pagefind-body>
+        <slot />
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="cv-footer" role="contentinfo">
+      <a href="https://lausanne.marketing/" target="_blank" rel="noopener">Website made by Lausanne Marketing //</a>
+    </footer>
+  </div>
+
+  <!-- Scroll to top -->
+  <a href="#main-content" class="cv-scroll-top" aria-label="Scroll to top">
+    <Icon name="ph:arrow-up" class="w-5 h-5" aria-hidden="true" />
+  </a>
+
+  <JsonLd site={site} breadcrumb={breadcrumb} currentUrl={currentUrl} isHome={isHome} />
+
+  <script src="../scripts/cv.ts"></script>
+</body>
+</html>
