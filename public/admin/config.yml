@@ -5,7 +5,7 @@ backend:
   name: github
   repo: lm-stack/tr
   branch: main
-  # base_url: https://sveltia-cms-auth.hello-cb2.workers.dev
+  base_url: https://sveltia-cms-auth.hello-cb2.workers.dev
 
 site_url: https://thomasrouaud.com
 
