@@ -7,9 +7,9 @@
   "logoText": "Thomas Rouaud",
   "logoIcon": "ph-user",
   "copyright": "Thomas Rouaud",
-  "webhookUrl": "",
+  "webhookUrl": "/api/contact",
   "webhookToken": "",
-  "turnstileSiteKey": "0x0000000000000000000000",
+  "turnstileSiteKey": "TURNSTILE_SITE_KEY_TODO",
   "fontsPreload": ["/fonts/quicksand-latin.woff2"],
   "nav": [
     { "url": "/", "label": "Home" },
