@@ -42,6 +42,4 @@ Interface d'édition accessible à `/admin/`. Les clients peuvent modifier le co
 
 ## Déploiement
 
-Le workflow GitHub Actions (`.github/workflows/deploy.yml`) build automatiquement le site et le déploie sur GitHub Pages à chaque push sur `main`.
-
-**Activer** : Settings > Pages > Source: GitHub Actions.
+Le site est déployé automatiquement sur **Cloudflare Pages** via connexion directe au repo GitHub (Git integration). Chaque push sur `main` déclenche un build et un déploiement automatique. Pas de `wrangler.toml` nécessaire.

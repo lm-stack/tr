@@ -280,18 +280,17 @@ Si de nouveaux champs ou collections ont été ajoutés → mettre à jour `publ
 
 ## Phase 6 — Déploiement
 
-### 6.1 GitHub Pages
+### 6.1 Cloudflare Pages
 
-1. Settings > Pages > Source : **GitHub Actions**
-2. Push vers `main` → premier déploiement
-3. Vérifier que `deploy.yml` et `ci.yml` passent
+1. [Cloudflare Dashboard](https://dash.cloudflare.com/) > Workers & Pages > Create > Pages
+2. Connecter le repo GitHub (Git integration directe, pas de `wrangler.toml` nécessaire)
+3. Build command : `npm run build` — Output directory : `dist`
+4. Push vers `main` → premier déploiement automatique
 
 ### 6.2 Custom domain (si applicable)
 
-1. CNAME dans le DNS → `<org>.github.io`
-2. Settings > Pages > Custom domain
-3. Activer "Enforce HTTPS"
-4. Retirer `ELEVENTY_PATH_PREFIX` du `deploy.yml` si présent
+1. Cloudflare Dashboard > Workers & Pages > projet > Custom domains > Add
+2. Ajouter le domaine (Cloudflare gère automatiquement le DNS et le HTTPS)
 
 ---
 

@@ -12,7 +12,7 @@ Guide pas à pas pour activer l'accès CMS multi-utilisateurs via OAuth GitHub. 
 ## Pré-requis
 
 Vérifier avant de commencer :
-- Le site est déployé (GitHub Pages actif)
+- Le site est déployé (Cloudflare Pages actif)
 - Le domaine est connu (final ou temporaire `*.lausanne.marketing`)
 - L'utilisateur a accès au [dashboard Cloudflare](https://dash.cloudflare.com/)
 

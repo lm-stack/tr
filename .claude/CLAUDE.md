@@ -10,7 +10,7 @@ Site CV/portfolio personnel de Thomas Rouaud, migré de WordPress vers **Astro 5
 - **Tailwind CSS v4** : classes utilitaires, via `@tailwindcss/vite`
 - **astro-icon** : icônes Phosphor via Iconify (`@iconify-json/ph`)
 - **Sveltia CMS** : interface d'édition de contenu
-- **GitHub Pages** : hébergement via GitHub Actions
+- **Cloudflare Pages** : hébergement via connexion directe au repo GitHub
 
 ## Architecture spécifique
 
