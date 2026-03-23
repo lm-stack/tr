@@ -362,7 +362,10 @@ const site = await getSiteData();
     window.onTurnstileLoad = function() {
       document.querySelectorAll('.cf-turnstile').forEach(function(el) {
         if (!el.querySelector('iframe')) {
-          window.turnstile.render(el, { sitekey: el.dataset.sitekey });
+          window.turnstile.render(el, {
+            sitekey: el.dataset.sitekey,
+            appearance: el.dataset.appearance || 'always'
+          });
         }
       });
     };
