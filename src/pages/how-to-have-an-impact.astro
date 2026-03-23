@@ -1,5 +1,6 @@
 ---
 import CvLayout from '../layouts/CvLayout.astro';
+import { Icon } from 'astro-icon/components';
 ---
 
 <CvLayout
@@ -9,22 +10,27 @@ import CvLayout from '../layouts/CvLayout.astro';
   }}
   breadcrumb="How to have an impact?"
 >
-  <div class="cv-subpage-header">
-    <a href="/" class="cv-subpage-back">&#x1438; Retour à la page d'accueil</a>
-    <div class="cv-subpage-category">Conference</div>
-    <h1 class="cv-subpage-title">How to have an impact?</h1>
-    <div class="cv-subpage-meta">
-      <p>University of St. Gallen, Switzerland</p>
-      <p>November 14-16, 2016</p>
+  <div class="cv-box cv-box--subpage">
+    <div class="cv-subpage-header">
+      <div class="cv-subpage-category"><Icon name="ph:tag" class="cv-subpage-category__icon" aria-hidden="true" /> Conference</div>
+      <h1 class="cv-subpage-title">How to have an impact?</h1>
+      <div class="cv-subpage-meta">
+        <p><Icon name="ph:map-pin" class="cv-subpage-meta__icon" aria-hidden="true" /> University of St. Gallen, Switzerland</p>
+        <p><Icon name="ph:calendar" class="cv-subpage-meta__icon" aria-hidden="true" /> November 14-16, 2016</p>
+      </div>
     </div>
-  </div>
 
-  <div class="cv-subpage-content">
-    <p>The Africa Summit St. Gallen is a two-day conference bringing together diverse actors from the African continent. Thomas Rouaud was invited as a speaker to give a presentation on how to have an impact.</p>
+    <div class="cv-subpage-content">
+      <p>The Africa Summit St. Gallen was a two-day conference that convened diverse stakeholders operating on the African continent. The event aimed to inspire, inform, and facilitate discussion among students at the University of St. Gallen. Thomas Rouaud was invited as a guest speaker to deliver a lecture addressing the question of "how to have an impact?"</p>
 
-    <div class="cv-subpage-images">
-      <img src="/images/how-to-have-an-impact-1.jpg" alt="Thomas Rouaud at Africa Summit St. Gallen" width="600" height="400" loading="lazy" />
-      <img src="/images/how-to-have-an-impact-2.jpg" alt="Presentation at University of St. Gallen" width="600" height="400" loading="lazy" />
+      <div class="cv-subpage-images">
+        <img src="/images/how-to-have-an-impact-1.jpg" alt="Thomas Rouaud at Africa Summit St. Gallen" width="600" height="400" loading="lazy" />
+        <img src="/images/how-to-have-an-impact-2.jpg" alt="Presentation at University of St. Gallen" width="600" height="400" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="cv-subpage-footer">
+      <a href="/" class="cv-subpage-back"><Icon name="ph:arrow-left" class="cv-subpage-back__icon" aria-hidden="true" /> Retour à la page d'accueil</a>
     </div>
   </div>
 </CvLayout>

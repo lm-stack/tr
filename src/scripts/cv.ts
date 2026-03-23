@@ -41,14 +41,15 @@ function init() {
   // ---- Progress Bar Animation ----
   const progressBars = document.querySelectorAll('[data-width]') as NodeListOf<HTMLElement>;
   progressBars.forEach(bar => {
-    bar.style.transition = 'width 0.8s ease';
+    bar.style.transition = 'none';
     bar.style.width = '0%';
   });
-  setTimeout(() => {
+  requestAnimationFrame(() => {
     progressBars.forEach(bar => {
+      bar.style.transition = 'width 0.8s ease';
       bar.style.width = bar.getAttribute('data-width') || '0%';
     });
-  }, 500);
+  });
 
   // ---- Contact Form Validation & Webhook ----
   document.querySelectorAll('form[data-webhook]').forEach(form => {
@@ -211,9 +212,10 @@ function init() {
   });
 }
 
-// Run init whether DOM is already loaded or not
+// Run on initial load and after View Transitions navigation
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
 }
+document.addEventListener('astro:page-load', init);
