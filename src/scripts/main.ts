@@ -362,10 +362,5 @@ function init() {
   });
 }
 
-// Run on initial load and after View Transitions navigation
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+// astro:page-load fires on initial load AND after each View Transition navigation
 document.addEventListener('astro:page-load', init);
