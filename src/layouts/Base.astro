@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import Footer from '../components/Footer.astro';
@@ -67,7 +67,7 @@ const footerDescription = (homeData?.data as HomePageData)?.footer?.description 
   {site.fontsPreload && site.fontsPreload.map((font: string) => (
     <link rel="preload" href={font} as="font" type="font/woff2" crossorigin>
   ))}
-  <ViewTransitions />
+  <ClientRouter />
 </head>
 <body class="bg-bg text-text text-text-m font-primary leading-relaxed antialiased">
 

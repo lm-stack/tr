@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import JsonLd from '../components/JsonLd.astro';
 import { getSiteData } from '../lib/data';
 import { Icon } from 'astro-icon/components';
@@ -58,7 +58,7 @@ const currentUrl = Astro.url.pathname;
   {site.fontsPreload && site.fontsPreload.map((font: string) => (
     <link rel="preload" href={font} as="font" type="font/woff2" crossorigin>
   ))}
-  <ViewTransitions />
+  <ClientRouter />
 </head>
 <body class="font-primary antialiased">
 
