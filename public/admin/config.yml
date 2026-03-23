@@ -57,7 +57,7 @@ collections:
           - { label: Logo (text), name: logoText, widget: string }
           - { label: Logo (Phosphor icon), name: logoIcon, widget: string, hint: "phosphoricons.com → copy name (e.g. ph-house)" }
           - { label: Copyright, name: copyright, widget: string }
-          - { label: Webhook Token, name: webhookToken, widget: string, required: false, hint: "Bearer token for webhook authentication" }
+
 
       - name: coordonnees
         label: Contact info
