@@ -50,10 +50,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
   );
 
-  const turnstileResult = await turnstileResponse.json<{ success: boolean }>();
+  const turnstileResult = await turnstileResponse.json<{ success: boolean; "error-codes"?: string[] }>();
 
   if (!turnstileResult.success) {
-    return jsonResponse({ success: false, error: "Turnstile validation failed" }, 403);
+    return jsonResponse({ success: false, error: "Turnstile validation failed", details: turnstileResult["error-codes"] }, 403);
   }
 
   // Sanitize fields (escape &, <, >) — keep email raw
