@@ -146,6 +146,23 @@ function init() {
       submitBtn!.innerHTML = '<span class="loading">Sending...</span>';
 
       try {
+        // Reset Turnstile to get a fresh token (previous one may have expired)
+        const turnstileWidget = form.querySelector('.cf-turnstile') as HTMLElement;
+        if ((window as any).turnstile && turnstileWidget) {
+          (window as any).turnstile.reset(turnstileWidget);
+          // Wait for Turnstile to generate a new token
+          await new Promise<void>((resolve) => {
+            const check = setInterval(() => {
+              const input = form.querySelector('input[name="cf-turnstile-response"]') as HTMLInputElement;
+              if (input && input.value) {
+                clearInterval(check);
+                resolve();
+              }
+            }, 100);
+            setTimeout(() => { clearInterval(check); resolve(); }, 5000);
+          });
+        }
+
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
 
