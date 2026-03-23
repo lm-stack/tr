@@ -346,7 +346,7 @@ const site = await getSiteData();
         <span id="message-error" class="form-error" role="alert"></span>
       </div>
 
-      <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey} data-callback="bricksTurnstileCallback" data-error-callback="bricksTurnstileErrorCallback"></div>
+      <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey} data-appearance="interaction-only"></div>
 
       <div class="cv-form-submit">
         <button type="submit" class="cv-btn-submit">

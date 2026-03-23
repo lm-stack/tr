@@ -12,7 +12,6 @@
   "turnstileSiteKey": "0x4AAAAAACLKUfZ3ERQR3qVU",
   "fontsPreload": ["/fonts/quicksand-latin.woff2"],
   "nav": [
-    { "url": "/", "label": "Home" },
-    { "url": "/contact/", "label": "Contact" }
+    { "url": "/", "label": "Home" }
   ]
 }
