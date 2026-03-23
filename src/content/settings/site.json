@@ -9,7 +9,7 @@
   "copyright": "Thomas Rouaud",
   "webhookUrl": "/api/contact",
   "webhookToken": "",
-  "turnstileSiteKey": "TURNSTILE_SITE_KEY_TODO",
+  "turnstileSiteKey": "0x4AAAAAACLKUfZ3ERQR3qVU",
   "fontsPreload": ["/fonts/quicksand-latin.woff2"],
   "nav": [
     { "url": "/", "label": "Home" },
