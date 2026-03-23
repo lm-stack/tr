@@ -27,7 +27,7 @@ const currentUrl = Astro.url.pathname;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' data: https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' data:; font-src 'self'; img-src 'self' data:; connect-src 'self' https:; frame-src https://challenges.cloudflare.com;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' data: https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' data:; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google-analytics.com; connect-src 'self' https:; frame-src https://challenges.cloudflare.com https://www.googletagmanager.com;">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>{site.name} | {seo.title}</title>
   <meta name="description" content={seo.description}>
@@ -59,8 +59,17 @@ const currentUrl = Astro.url.pathname;
     <link rel="preload" href={font} as="font" type="font/woff2" crossorigin>
   ))}
   <ClientRouter />
+
+  <!-- Google Tag Manager -->
+  <script is:inline>{`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-P5338CS');`}</script>
 </head>
 <body class="font-primary antialiased">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P5338CS" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:bg-primary focus:text-white focus:py-xs focus:px-s focus:rounded focus:text-text-s">
     Skip to main content
