@@ -39,5 +39,14 @@ const site = await getSiteData();
     </div>
   </div>
 
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script is:inline>
+    window.onTurnstileLoad = function() {
+      document.querySelectorAll('.cf-turnstile').forEach(function(el) {
+        if (!el.querySelector('iframe')) {
+          window.turnstile.render(el, { sitekey: el.dataset.sitekey });
+        }
+      });
+    };
+  </script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit" async defer data-astro-rerun></script>
 </CvLayout>
